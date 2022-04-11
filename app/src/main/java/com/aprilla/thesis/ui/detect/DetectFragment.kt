@@ -28,11 +28,11 @@ class DetectFragment : Fragment() {
         _binding = FragmentDetectBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textGallery
-        galleryViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
+    }
+
+    private fun setListeners(){
+
     }
 
     private fun validation(query: String): Boolean{

@@ -30,10 +30,11 @@ class SearchResultActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        keyword = intent.getStringExtra(KEYWORD).toString()
         binding = ActivitySearchResultBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.title = "Hasil Pencarian"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        keyword = intent.getStringExtra(KEYWORD).toString()
         setLayouts()
     }
 
@@ -58,12 +59,12 @@ class SearchResultActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            android.R.id.home -> onBackPressed()
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when(item.itemId){
+//            android.R.id.home -> onBackPressed()
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     private fun setLayouts() {
         Log.d("TAG", "setLayouts: $keyword")
@@ -83,8 +84,11 @@ class SearchResultActivity : AppCompatActivity() {
 
             override fun onItemSave(article: ItemsRSS?, position: Int) {
                 if (article != null) {
-                    searchViewModel.setFavourite(article.link, article.favourite)
-                    adapter.notifyItemChanged(position)
+                    if (article.favourite){
+                        searchViewModel.saveItem(article)
+                    }else{
+                        searchViewModel.deleteItem(article)
+                    }
                 }
             }
 
@@ -100,10 +104,12 @@ class SearchResultActivity : AppCompatActivity() {
                                     stopShimmer()
                                     visibility = View.GONE
                                 }
-                                content.data?.let { adapter.setData(it) }
+                                result.data?.let { adapter.setData(it) }
+                                Log.d("TAG", "setLayouts: ${result.data}")
+                                Log.d("TAG", "setLayouts: ${result.message}")
                                 with(rv) {
-                                    visibility = View.VISIBLE
                                     setAdapter(adapter)
+                                    visibility = View.VISIBLE
                                     layoutManager = LinearLayoutManager(context)
                                 }
                                 searched.removeObservers(this)
@@ -131,10 +137,12 @@ class SearchResultActivity : AppCompatActivity() {
                                     stopShimmer()
                                     visibility = View.GONE
                                 }
-                                content.data?.let { adapter.setData(it) }
+                                result.data?.let { adapter.setData(it) }
+                                Log.d("TAG", "setLayouts: ${result.data}")
+                                Log.d("TAG", "setLayouts: ${result.message}")
                                 with(rv) {
-                                    visibility = View.VISIBLE
                                     setAdapter(adapter)
+                                    visibility = View.VISIBLE
                                     layoutManager = LinearLayoutManager(context)
                                 }
                                 searched.removeObservers(this)

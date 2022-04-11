@@ -23,6 +23,11 @@ class SavedAdapter: RecyclerView.Adapter<SavedAdapter.CardViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun updateData(position: Int): Boolean{
+        notifyItemRemoved(position)
+        return rssData.isEmpty()
+    }
+
 //    fun setSavedData(items: List<ItemsRSS>){
 //        rssData.clear()
 //        rssData.addAll(items)

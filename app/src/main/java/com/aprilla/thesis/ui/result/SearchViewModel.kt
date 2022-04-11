@@ -13,5 +13,7 @@ class SearchViewModel(MainRepository: MainRepository): ViewModel() {
 
     fun fetchItems(): LiveData<Resource<List<ItemsRSS>>> = repo.getSavedRss()
 
-    fun setFavourite(link: String, state: Boolean) = repo.setFavorite(link, state)
+    fun saveItem(item: ItemsRSS) = repo.saveRss(item)
+
+    fun deleteItem(item: ItemsRSS) = repo.deleteRss(item)
 }

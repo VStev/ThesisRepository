@@ -19,7 +19,9 @@ class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
 
     fun setData(items: List<ItemsRSS>){
         rssData.clear()
-        rssData.addAll(items)
+        items.forEach {
+            if (it.author.isNotBlank() || it.author.isNotEmpty()) rssData.add(it)
+        }
         notifyDataSetChanged()
     }
 

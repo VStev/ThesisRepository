@@ -34,8 +34,8 @@ data class ItemsRSS @JvmOverloads constructor(
 //    @ColumnInfo(name = "guid")
 //    var guid: String = "",
 
-    @field:Element(name = "thumbnail")
-    @param:Element(name = "thumbnail")
+    @field:Element(name = "thumbnail", required = false)
+    @param:Element(name = "thumbnail", required = false)
     @ColumnInfo(name = "thumbnail")
     var thumbnail: String = "",
 
@@ -53,8 +53,8 @@ data class ItemsRSS @JvmOverloads constructor(
 
     @field:Namespace(prefix = "dc", reference = "http://purl.org/dc/elements/1.1/")
     @param:Namespace(prefix = "dc", reference = "http://purl.org/dc/elements/1.1/")
-    @field:Element(name = "creator", data = true)
-    @param:Element(name = "creator", data = true)
+    @field:Element(name = "creator", data = true, required = false)
+    @param:Element(name = "creator", data = true, required = false)
     @ColumnInfo(name = "author")
     var author: String = "",
 

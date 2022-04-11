@@ -197,15 +197,16 @@ class RemoteRepository(private val retrofit: InterfaceRSS) {
         fetch.enqueue(object: Callback<ResponseRSS>{
             override fun onResponse(call: Call<ResponseRSS>, response: Response<ResponseRSS>) {
                 if (response.code() == 200){
-                    Log.d("TAG", "onResponse: success, ${response.body()}")
-                    rValue.postValue(Responses.Success(response.body()?.item as List<ItemsRSS>))
+                    if (response.body()?.item != null) {
+                        rValue.postValue(Responses.Success(response.body()?.item as List<ItemsRSS>))
+                    }else{
+                        rValue.postValue(Responses.Empty)
+                    }
                 }else{
-                    Log.d("TAG", "onResponse: empty, ${response.body()}")
                     rValue.postValue(Responses.Empty)
                 }
             }
             override fun onFailure(call: Call<ResponseRSS>?, t: Throwable?) {
-                Log.d("TAG", "onResponse: fail, $t")
                 if (t != null) {
                     rValue.postValue(t.message?.let { Responses.Error(it) })
                 }

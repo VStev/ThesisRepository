@@ -16,4 +16,5 @@
     <string name="gagal_melakukan_koneksi_ke_server_nsilahkan_cek_koneksi_internet_anda">Gagal melakukan koneksi ke server \nSilahkan cek koneksi internet anda</string>
     <string name="cari_berita">Cari berita</string>
     <string name="hint">Masukkan judul berita yang ingin dicari</string>
+    <string name="no_saved_news">Tidak ada berita tersimpan</string>
 </resources>

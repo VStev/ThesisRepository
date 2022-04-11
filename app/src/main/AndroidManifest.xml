@@ -14,7 +14,8 @@
         android:theme="@style/Theme.Thesis">
         <activity
             android:name=".ui.result.SearchResultActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".ui.details.DetailActivity"
             android:exported="false" />

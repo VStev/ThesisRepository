@@ -52,7 +52,10 @@ class SavedNewsFragment : Fragment() {
 //                                )
 //                    savedViewModel.setFavourite(article.link, article.favourite)
                     savedViewModel.deleteRss(article)
-                    adapter.notifyItemRemoved(position)
+                    if (adapter.updateData(position)) {
+                        binding.notFound.visibility = View.VISIBLE
+                        binding.rvNews.visibility = View.GONE
+                    }
                 }
             }
 
@@ -78,11 +81,12 @@ class SavedNewsFragment : Fragment() {
                     data.removeObservers(viewLifecycleOwner)
                 }
                 Status.ERROR -> {
-                    Toast.makeText(
-                        context,
-                        "Gagal memuat data, ${content.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    binding.shimmerLayout.apply {
+                        stopShimmer()
+                        visibility = View.GONE
+                    }
+                    binding.notFound.visibility = View.VISIBLE
+                    binding.rvNews.visibility = View.GONE
                 }
                 else -> {
                 }

@@ -54,6 +54,7 @@ class HomeFragment : Fragment() {
                 val intent = Intent(activity, SearchResultActivity::class.java)
                 intent.putExtra(SearchResultActivity.KEYWORD, keyword)
                 startActivity(intent)
+//                activity?.finish()
                 return true
             }
             override fun onQueryTextChange(newText: String): Boolean {
@@ -137,6 +138,10 @@ class HomeFragment : Fragment() {
                                 }
                             }
                             Status.ERROR -> {
+                                binding.shimmerLayout.apply {
+                                    stopShimmer()
+                                    visibility = View.GONE
+                                }
                                 binding.notFound.visibility = View.VISIBLE
                                 binding.rvNews.visibility = View.GONE
                             }
