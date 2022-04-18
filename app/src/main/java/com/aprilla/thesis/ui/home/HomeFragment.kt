@@ -1,11 +1,15 @@
 package com.aprilla.thesis.ui.home
 
+import android.app.Activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
+import android.widget.AutoCompleteTextView
 import android.widget.SearchView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aprilla.thesis.R
@@ -17,6 +21,7 @@ import com.aprilla.thesis.ui.details.DetailActivity
 import com.aprilla.thesis.ui.result.SearchResultActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.net.URLEncoder
+
 
 class HomeFragment : Fragment() {
 
@@ -57,6 +62,7 @@ class HomeFragment : Fragment() {
 //                activity?.finish()
                 return true
             }
+
             override fun onQueryTextChange(newText: String): Boolean {
                 return false
             }
@@ -81,9 +87,9 @@ class HomeFragment : Fragment() {
             override fun onItemSave(article: ItemsRSS?, position: Int) {
                 if (article != null) {
 //                    homeViewModel.setFavourite(article.link, article.favourite)
-                    if (article.favourite){
+                    if (article.favourite) {
                         homeViewModel.saveItem(article)
-                    }else{
+                    } else {
                         homeViewModel.deleteItem(article)
                     }
                 }
@@ -95,8 +101,8 @@ class HomeFragment : Fragment() {
             when (content.status) {
                 Status.SUCCESS -> {
                     content.data?.let { adapter.setSavedData(it) }
-                    data.observe(viewLifecycleOwner){ data ->
-                        when (data.status){
+                    data.observe(viewLifecycleOwner) { data ->
+                        when (data.status) {
                             Status.SUCCESS -> {
 //                                Toast.makeText(context, "Loaded", Toast.LENGTH_SHORT).show()
                                 binding.shimmerLayout.apply {
@@ -122,8 +128,8 @@ class HomeFragment : Fragment() {
                 }
                 Status.ERROR -> {
                     content.data?.let { adapter.setSavedData(it) }
-                    data.observe(viewLifecycleOwner){ data ->
-                        when (data.status){
+                    data.observe(viewLifecycleOwner) { data ->
+                        when (data.status) {
                             Status.SUCCESS -> {
 //                                Toast.makeText(context, "Loaded", Toast.LENGTH_SHORT).show()
                                 binding.shimmerLayout.apply {

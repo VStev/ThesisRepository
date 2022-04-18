@@ -1,12 +1,12 @@
 package com.aprilla.thesis.ui.detect
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.aprilla.thesis.databinding.FragmentDetectBinding
 
 class DetectFragment : Fragment() {
@@ -22,22 +22,31 @@ class DetectFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val galleryViewModel =
-            ViewModelProvider(this).get(DetectViewModel::class.java)
-
         _binding = FragmentDetectBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        return root
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setListeners()
     }
 
     private fun setListeners(){
-
+        binding.buttonPredict.setOnClickListener {
+            val query = binding.newsTitle.text.toString()
+            if (validation(query)){
+                Toast.makeText(context, "Input valid, $query", Toast.LENGTH_SHORT).show()
+                binding.newsTitle.text?.clear()
+            }else{
+                Toast.makeText(context, "Input Invalid", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun validation(query: String): Boolean{
-        val trimmed = query.toString().trim()
-        val size = trimmed.split("\\s").size
+        val trimmed = query.trim()
+        val size = trimmed.split("\\s+".toRegex()).size
+        Log.d("TAG", "validation: $size")
         return size > 5
     }
 

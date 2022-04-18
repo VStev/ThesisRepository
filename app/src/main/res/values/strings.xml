@@ -17,4 +17,5 @@
     <string name="cari_berita">Cari berita</string>
     <string name="hint">Masukkan judul berita yang ingin dicari</string>
     <string name="no_saved_news">Tidak ada berita tersimpan</string>
+    <string name="tidak_ditemukan">Berita dengan kata kunci %s tidak ditemukan</string>
 </resources>

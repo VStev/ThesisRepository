@@ -34,8 +34,8 @@ data class ItemsRSS @JvmOverloads constructor(
 //    @ColumnInfo(name = "guid")
 //    var guid: String = "",
 
-    @field:Element(name = "thumbnail", required = false)
-    @param:Element(name = "thumbnail", required = false)
+    @field:Element(name = "image", required = false)
+    @param:Element(name = "image", required = false)
     @ColumnInfo(name = "thumbnail")
     var thumbnail: String = "",
 

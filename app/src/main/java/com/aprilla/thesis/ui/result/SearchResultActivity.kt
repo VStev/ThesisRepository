@@ -120,6 +120,7 @@ class SearchResultActivity : AppCompatActivity() {
                                     visibility = View.GONE
                                 }
                                 binding.notFound.visibility = View.VISIBLE
+                                binding.errorMessage.text = getString(R.string.tidak_ditemukan, keyword)
                                 binding.rvNews.visibility = View.GONE
                             }
                             else -> {
@@ -153,6 +154,7 @@ class SearchResultActivity : AppCompatActivity() {
                                     visibility = View.GONE
                                 }
                                 binding.notFound.visibility = View.VISIBLE
+                                binding.errorMessage.text = getString(R.string.tidak_ditemukan, keyword)
                                 binding.rvNews.visibility = View.GONE
                             }
                             else -> {

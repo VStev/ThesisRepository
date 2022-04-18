@@ -2,9 +2,13 @@ package com.aprilla.thesis.ui.details
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.aprilla.thesis.R
 import com.aprilla.thesis.databinding.ActivityDetailBinding
+
 
 class DetailActivity : AppCompatActivity() {
 
@@ -29,6 +33,15 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setLayouts() {
+        binding.webviewNews.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(
+                view: WebView,
+                request: WebResourceRequest
+            ): Boolean {
+                view.loadUrl(request.url.toString())
+                return false
+            }
+        }
         binding.webviewNews.apply {
             settings.javaScriptEnabled = true
             newsUrl = intent.getStringExtra(NEWS_URL).toString()
