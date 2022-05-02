@@ -99,7 +99,6 @@ class SearchResultActivity : AppCompatActivity() {
                     searched.observe(this){ result ->
                         when (result.status){
                             Status.SUCCESS -> {
-                                Toast.makeText(this, "Loaded", Toast.LENGTH_SHORT).show()
                                 binding.shimmerLayout.apply {
                                     stopShimmer()
                                     visibility = View.GONE
@@ -133,7 +132,6 @@ class SearchResultActivity : AppCompatActivity() {
                     searched.observe(this){ result ->
                         when (result.status){
                             Status.SUCCESS -> {
-                                Toast.makeText(this, "Loaded", Toast.LENGTH_SHORT).show()
                                 binding.shimmerLayout.apply {
                                     stopShimmer()
                                     visibility = View.GONE

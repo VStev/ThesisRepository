@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.aprilla.thesis.databinding.FragmentDetectBinding
+import com.aprilla.thesis.repository.Status
 
 class DetectFragment : Fragment() {
 
     private var _binding: FragmentDetectBinding? = null
+    private val detectViewModel: DetectViewModel by viewModel()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -35,11 +38,32 @@ class DetectFragment : Fragment() {
         binding.buttonPredict.setOnClickListener {
             val query = binding.newsTitle.text.toString()
             if (validation(query)){
-                Toast.makeText(context, "Input valid, $query", Toast.LENGTH_SHORT).show()
-                binding.newsTitle.text?.clear()
+                val detect = detectViewModel.predictCategory(query)
+                detect.observe(viewLifecycleOwner){ result ->
+                    when (result.status){
+                        Status.SUCCESS -> {
+                            Toast.makeText(context, "Hasilnya adalah ${result.data}", Toast.LENGTH_LONG).show()
+                            detect.removeObservers(viewLifecycleOwner)
+                        }
+                        Status.ERROR -> {
+                            Toast.makeText(context, "Gagal melakukan koneksi ke server", Toast.LENGTH_LONG).show()
+                            detect.removeObservers(viewLifecycleOwner)
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
             }else{
-                Toast.makeText(context, "Input Invalid", Toast.LENGTH_SHORT).show()
+                binding.textError.visibility = View.VISIBLE
             }
+        }
+    }
+
+    private fun showFeed(category: String){
+        val feed = detectViewModel.getFeedFromCategory(category)
+        feed.observe(viewLifecycleOwner){
+
         }
     }
 

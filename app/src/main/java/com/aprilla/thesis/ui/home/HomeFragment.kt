@@ -1,15 +1,11 @@
 package com.aprilla.thesis.ui.home
 
-import android.app.Activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.InputMethodManager
-import android.widget.AutoCompleteTextView
 import android.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aprilla.thesis.R
@@ -26,9 +22,6 @@ import java.net.URLEncoder
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
     private val homeViewModel: HomeViewModel by viewModel()
 
@@ -59,7 +52,6 @@ class HomeFragment : Fragment() {
                 val intent = Intent(activity, SearchResultActivity::class.java)
                 intent.putExtra(SearchResultActivity.KEYWORD, keyword)
                 startActivity(intent)
-//                activity?.finish()
                 return true
             }
 
@@ -86,7 +78,6 @@ class HomeFragment : Fragment() {
 
             override fun onItemSave(article: ItemsRSS?, position: Int) {
                 if (article != null) {
-//                    homeViewModel.setFavourite(article.link, article.favourite)
                     if (article.favourite) {
                         homeViewModel.saveItem(article)
                     } else {
@@ -104,7 +95,6 @@ class HomeFragment : Fragment() {
                     data.observe(viewLifecycleOwner) { data ->
                         when (data.status) {
                             Status.SUCCESS -> {
-//                                Toast.makeText(context, "Loaded", Toast.LENGTH_SHORT).show()
                                 binding.shimmerLayout.apply {
                                     stopShimmer()
                                     visibility = View.GONE
@@ -131,7 +121,6 @@ class HomeFragment : Fragment() {
                     data.observe(viewLifecycleOwner) { data ->
                         when (data.status) {
                             Status.SUCCESS -> {
-//                                Toast.makeText(context, "Loaded", Toast.LENGTH_SHORT).show()
                                 binding.shimmerLayout.apply {
                                     stopShimmer()
                                     visibility = View.GONE
@@ -161,31 +150,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
-//        data.observe(viewLifecycleOwner) { content ->
-//            when (content.status) {
-//                Status.SUCCESS -> {
-//                    Toast.makeText(context, "Loaded", Toast.LENGTH_SHORT).show()
-//                    binding.shimmerLayout.apply {
-//                        stopShimmer()
-//                        visibility = View.GONE
-//                    }
-//                    content.data?.let { adapter.setData(it) }
-//                    with(rv) {
-//                        visibility = View.VISIBLE
-//                        setAdapter(adapter)
-//                        layoutManager = LinearLayoutManager(context)
-//                    }
-//                    data.removeObservers(viewLifecycleOwner)
-//                }
-//                Status.ERROR -> {
-//                    binding.notFound.visibility = View.VISIBLE
-//                    binding.rvNews.visibility = View.GONE
-//                }
-//                else -> {
-//                }
-//            }
-//        }
     }
 
     override fun onDestroyView() {

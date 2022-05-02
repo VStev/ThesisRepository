@@ -3,11 +3,12 @@ package com.aprilla.thesis.ui.detect
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.aprilla.thesis.repository.MainRepository
 
-class DetectViewModel : ViewModel() {
+class DetectViewModel(MainRepository: MainRepository) : ViewModel() {
+    private val repo = MainRepository
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is gallery Fragment"
-    }
-    val text: LiveData<String> = _text
+    fun predictCategory(title: String) = repo.predictCategory(title)
+
+    fun getFeedFromCategory(category: String) = repo.fetchItemsByCategory(category)
 }

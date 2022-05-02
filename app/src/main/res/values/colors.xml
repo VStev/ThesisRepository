@@ -9,4 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#808080</color>
     <color name="trans">#00000000</color>
+    <color name="primaryColor">#fafafa</color>
+    <color name="primaryLightColor">#ffffff</color>
+    <color name="primaryDarkColor">#c7c7c7</color>
+    <color name="secondaryColor">#64b5f6</color>
+    <color name="secondaryLightColor">#9be7ff</color>
+    <color name="secondaryDarkColor">#2286c3</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#000000</color>
 </resources>

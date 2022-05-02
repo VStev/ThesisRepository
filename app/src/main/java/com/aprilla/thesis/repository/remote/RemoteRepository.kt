@@ -3,13 +3,15 @@ package com.aprilla.thesis.repository.remote
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.aprilla.thesis.models.HerokuRequest
 import com.aprilla.thesis.models.ItemsRSS
+import com.aprilla.thesis.models.ResponseHeroku
 import com.aprilla.thesis.models.ResponseRSS
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RemoteRepository(private val retrofit: InterfaceRSS) {
+class RemoteRepository(private val retrofit: InterfaceRSS, private val pRetrofit: InterfaceHeroku) {
 
     fun mainFeed(): LiveData<Responses<List<ItemsRSS>>>{
         val rValue = MutableLiveData<Responses<List<ItemsRSS>>>()
@@ -22,10 +24,8 @@ class RemoteRepository(private val retrofit: InterfaceRSS) {
                     rValue.postValue(Responses.Empty)
                 }
             }
-            override fun onFailure(call: Call<ResponseRSS>?, t: Throwable?) {
-                if (t != null) {
-                    rValue.postValue(t.message?.let { Responses.Error(it) })
-                }
+            override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
+                rValue.postValue(t.message?.let { Responses.Error(it) })
             }
         })
         return rValue
@@ -42,10 +42,8 @@ class RemoteRepository(private val retrofit: InterfaceRSS) {
                     rValue.postValue(Responses.Empty)
                 }
             }
-            override fun onFailure(call: Call<ResponseRSS>?, t: Throwable?) {
-                if (t != null) {
-                    rValue.postValue(t.message?.let { Responses.Error(it) })
-                }
+            override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
+                rValue.postValue(t.message?.let { Responses.Error(it) })
             }
         })
         return rValue
@@ -62,10 +60,8 @@ class RemoteRepository(private val retrofit: InterfaceRSS) {
                     rValue.postValue(Responses.Empty)
                 }
             }
-            override fun onFailure(call: Call<ResponseRSS>?, t: Throwable?) {
-                if (t != null) {
-                    rValue.postValue(t.message?.let { Responses.Error(it) })
-                }
+            override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
+                rValue.postValue(t.message?.let { Responses.Error(it) })
             }
         })
         return rValue
@@ -82,10 +78,8 @@ class RemoteRepository(private val retrofit: InterfaceRSS) {
                     rValue.postValue(Responses.Empty)
                 }
             }
-            override fun onFailure(call: Call<ResponseRSS>?, t: Throwable?) {
-                if (t != null) {
-                    rValue.postValue(t.message?.let { Responses.Error(it) })
-                }
+            override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
+                rValue.postValue(t.message?.let { Responses.Error(it) })
             }
         })
         return rValue
@@ -102,10 +96,8 @@ class RemoteRepository(private val retrofit: InterfaceRSS) {
                     rValue.postValue(Responses.Empty)
                 }
             }
-            override fun onFailure(call: Call<ResponseRSS>?, t: Throwable?) {
-                if (t != null) {
-                    rValue.postValue(t.message?.let { Responses.Error(it) })
-                }
+            override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
+                rValue.postValue(t.message?.let { Responses.Error(it) })
             }
         })
         return rValue
@@ -122,10 +114,8 @@ class RemoteRepository(private val retrofit: InterfaceRSS) {
                     rValue.postValue(Responses.Empty)
                 }
             }
-            override fun onFailure(call: Call<ResponseRSS>?, t: Throwable?) {
-                if (t != null) {
-                    rValue.postValue(t.message?.let { Responses.Error(it) })
-                }
+            override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
+                rValue.postValue(t.message?.let { Responses.Error(it) })
             }
         })
         return rValue
@@ -142,10 +132,8 @@ class RemoteRepository(private val retrofit: InterfaceRSS) {
                     rValue.postValue(Responses.Empty)
                 }
             }
-            override fun onFailure(call: Call<ResponseRSS>?, t: Throwable?) {
-                if (t != null) {
-                    rValue.postValue(t.message?.let { Responses.Error(it) })
-                }
+            override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
+                rValue.postValue(t.message?.let { Responses.Error(it) })
             }
         })
         return rValue
@@ -162,10 +150,8 @@ class RemoteRepository(private val retrofit: InterfaceRSS) {
                     rValue.postValue(Responses.Empty)
                 }
             }
-            override fun onFailure(call: Call<ResponseRSS>?, t: Throwable?) {
-                if (t != null) {
-                    rValue.postValue(t.message?.let { Responses.Error(it) })
-                }
+            override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
+                rValue.postValue(t.message?.let { Responses.Error(it) })
             }
         })
         return rValue
@@ -182,10 +168,8 @@ class RemoteRepository(private val retrofit: InterfaceRSS) {
                     rValue.postValue(Responses.Empty)
                 }
             }
-            override fun onFailure(call: Call<ResponseRSS>?, t: Throwable?) {
-                if (t != null) {
-                    rValue.postValue(t.message?.let { Responses.Error(it) })
-                }
+            override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
+                rValue.postValue(t.message?.let { Responses.Error(it) })
             }
         })
         return rValue
@@ -206,10 +190,31 @@ class RemoteRepository(private val retrofit: InterfaceRSS) {
                     rValue.postValue(Responses.Empty)
                 }
             }
-            override fun onFailure(call: Call<ResponseRSS>?, t: Throwable?) {
-                if (t != null) {
-                    rValue.postValue(t.message?.let { Responses.Error(it) })
+            override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
+                rValue.postValue(t.message?.let { Responses.Error(it) })
+            }
+        })
+        return rValue
+    }
+
+    fun predictCategory(title: String): LiveData<Responses<String>>{
+        val request = HerokuRequest(title)
+        val rValue = MutableLiveData<Responses<String>>()
+        val fetch = pRetrofit.predict(request)
+        fetch.enqueue(object: Callback<ResponseHeroku>{
+            override fun onResponse(call: Call<ResponseHeroku>, response: Response<ResponseHeroku>) {
+                if (response.code() == 200){
+                    if (response.body()?.category != null) {
+                        rValue.postValue(Responses.Success(response.body()?.category as String))
+                    }else{
+                        rValue.postValue(Responses.Empty)
+                    }
+                }else{
+                    rValue.postValue(Responses.Empty)
                 }
+            }
+            override fun onFailure(call: Call<ResponseHeroku>, t: Throwable) {
+                rValue.postValue(t.message?.let { Responses.Error(it) })
             }
         })
         return rValue

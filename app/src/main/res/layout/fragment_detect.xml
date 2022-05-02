@@ -62,4 +62,21 @@
         app:layout_constraintEnd_toEndOf="@+id/input_1"
         app:layout_constraintTop_toBottomOf="@+id/input_1" />
 
+    <TextView
+        android:id="@+id/text_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#c62828"
+        android:textStyle="italic"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="8dp"
+        android:text="Inputan tidak valid, minimal 6 kata"
+        app:layout_constraintEnd_toStartOf="@+id/button_predict"
+        app:layout_constraintStart_toStartOf="@+id/input_1"
+        app:layout_constraintTop_toTopOf="@+id/button_predict"
+        app:layout_constraintBottom_toBottomOf="@+id/button_predict"
+        android:visibility="gone"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

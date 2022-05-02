@@ -3,12 +3,13 @@ package com.aprilla.thesis.di
 import androidx.room.Room
 import com.aprilla.thesis.AppExecutors
 import com.aprilla.thesis.BASE_URL
-import com.aprilla.thesis.GCP_URL
+import com.aprilla.thesis.HEROKU_URL
 import com.aprilla.thesis.repository.MainRepository
 import com.aprilla.thesis.repository.remote.InterfaceRSS
 import com.aprilla.thesis.repository.remote.RemoteRepository
 import com.aprilla.thesis.repository.local.LocalRepository
 import com.aprilla.thesis.repository.local.SavedRSSDatabase
+import com.aprilla.thesis.ui.detect.DetectViewModel
 import com.aprilla.thesis.ui.home.HomeViewModel
 import com.aprilla.thesis.ui.result.SearchViewModel
 import com.aprilla.thesis.ui.saved.SavedNewsViewModel
@@ -24,9 +25,6 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 @JvmField
 val rssModule = module {
     single(named("rss")) {
-        val gson = GsonBuilder()
-            .setLenient()
-            .create()
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(SimpleXmlConverterFactory.create())
@@ -41,7 +39,7 @@ val mlModule = module {
             .setLenient()
             .create()
         val retrofit = Retrofit.Builder()
-            .baseUrl(GCP_URL)
+            .baseUrl(HEROKU_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
@@ -61,11 +59,11 @@ val databaseModule = module {
 }
 
 val repositoryModule = module {
-    single(named("rssRepo")) { RemoteRepository(get(named("rss"))) }
+    single(named("remoteRepository")) { RemoteRepository(get(named("rss")), get(named("predict"))) }
     single(named("databaseRepo")) { LocalRepository(get()) }
     single(named("mainRepository")) {
         MainRepository(
-            get(named("rssRepo")),
+            get(named("remoteRepository")),
             get(named("databaseRepo")),
             AppExecutors()
         )
@@ -85,6 +83,9 @@ val viewModelModule = module {
     }
     viewModel{
         SearchViewModel(get(named("mainRepository")))
+    }
+    viewModel{
+        DetectViewModel(get(named("mainRepository")))
     }
 }
 

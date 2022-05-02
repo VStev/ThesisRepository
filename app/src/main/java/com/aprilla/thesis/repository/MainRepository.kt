@@ -58,6 +58,34 @@ class MainRepository(
         return result
     }
 
+    fun fetchItemsByCategory(category: String): LiveData<Resource<List<ItemsRSS>>> {
+        val result = MediatorLiveData<Resource<List<ItemsRSS>>>()
+        result.value = Resource.loading(null)
+        val fetch = when {
+            (category == "News") -> repo.newsFeed()
+            (category == "Politik") -> repo.politicFeed()
+            (category == "Ekonomi") -> repo.economyFeed()
+            (category == "Olahraga") -> repo.sportFeed()
+            (category == "Kesehatan") -> repo.healthFeed()
+            else -> repo.entFeed()
+        }
+        result.addSource(fetch) { data ->
+            result.removeSource(fetch)
+            when (data) {
+                is Responses.Success -> {
+                    result.value = Resource.success(data.data)
+                }
+                is Responses.Error -> {
+                    result.value = Resource.error(data.errorMessage, null)
+                }
+                is Responses.Empty -> {
+                    result.value = Resource.error("Tidak ada data", null)
+                }
+            }
+        }
+        return result
+    }
+
 
 //    fun fetchCategorySpecific(category: String): LiveData<Resource<List<ItemsRSS>>> {
 //        return object : NetworkBoundResource<List<ItemsRSS>, List<ItemsRSS>>(exec) {
@@ -108,6 +136,26 @@ class MainRepository(
         result.value = Resource.loading(null)
         result.addSource(repo.searchFeed(keyword)) { data ->
             result.removeSource(repo.searchFeed(keyword))
+            when (data) {
+                is Responses.Success -> {
+                    result.value = Resource.success(data.data)
+                }
+                is Responses.Error -> {
+                    result.value = Resource.error(data.errorMessage, null)
+                }
+                is Responses.Empty -> {
+                    result.value = Resource.error("Tidak ada data", null)
+                }
+            }
+        }
+        return result
+    }
+
+    fun predictCategory(title: String): LiveData<Resource<String>>{
+        val result = MediatorLiveData<Resource<String>>()
+        result.value = Resource.loading(null)
+        result.addSource(repo.predictCategory(title)) { data ->
+            result.removeSource(repo.predictCategory(title))
             when (data) {
                 is Responses.Success -> {
                     result.value = Resource.success(data.data)
