@@ -86,12 +86,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/txt_rssDate"
             android:backgroundTint="@color/trans"
             android:src="@drawable/ic_baseline_not_bookmarked_24"
             />
+
+        <ImageButton
+            android:id="@+id/button_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="43dp"
+            android:src="@drawable/ic_baseline_more_vert_24"
+            android:backgroundTint="@color/trans"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

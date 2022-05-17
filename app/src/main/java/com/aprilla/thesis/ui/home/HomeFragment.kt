@@ -5,8 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.PopupMenu
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aprilla.thesis.R
 import com.aprilla.thesis.adapter.FeedAdapter
@@ -14,6 +18,7 @@ import com.aprilla.thesis.databinding.FragmentHomeBinding
 import com.aprilla.thesis.models.ItemsRSS
 import com.aprilla.thesis.repository.Status
 import com.aprilla.thesis.ui.details.DetailActivity
+import com.aprilla.thesis.ui.detect.DetectFragment
 import com.aprilla.thesis.ui.result.SearchResultActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.net.URLEncoder
@@ -38,6 +43,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         setLayouts()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -86,6 +95,24 @@ class HomeFragment : Fragment() {
                 }
             }
 
+            override fun onMenuClicked(article: ItemsRSS?, cView: View) {
+                val popup = PopupMenu(context, cView)
+                val inflater: MenuInflater = popup.menuInflater
+                inflater.inflate(R.menu.popup_menu, popup.menu)
+                popup.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.predict_this -> {
+                            val bundle = Bundle()
+                            bundle.putString("title", article?.title)
+//                            view?.let { Navigation.findNavController(it).navigate(R.id.action_nav_home_to_nav_detect, bundle) }
+                            findNavController().navigate(R.id.action_nav_home_to_nav_detect, bundle)
+                            true
+                        } //redirect to fragment detect with title
+                        else -> false
+                    }
+                }
+                popup.show()
+            }
         })
 
         saved.observe(viewLifecycleOwner) { content ->

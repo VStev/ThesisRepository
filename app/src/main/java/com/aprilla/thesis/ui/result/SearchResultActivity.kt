@@ -6,11 +6,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
+import android.view.MenuInflater
 import android.view.View
+import android.widget.PopupMenu
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aprilla.thesis.R
 import com.aprilla.thesis.adapter.FeedAdapter
@@ -90,6 +91,22 @@ class SearchResultActivity : AppCompatActivity() {
                         searchViewModel.deleteItem(article)
                     }
                 }
+            }
+
+            override fun onMenuClicked(article: ItemsRSS?, view: View) {
+                val popup = PopupMenu(applicationContext, view)
+                val inflater: MenuInflater = popup.menuInflater
+                inflater.inflate(R.menu.popup_menu, popup.menu)
+                popup.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.predict_this -> {
+
+                            true
+                        } //redirect to fragment detect with title
+                        else -> false
+                    }
+                }
+                popup.show()
             }
 
         })

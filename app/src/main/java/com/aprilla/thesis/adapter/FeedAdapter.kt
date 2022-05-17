@@ -68,6 +68,9 @@ class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
             binding.cardNews.setOnClickListener{
                 onItemClickCallback.onItemClicked(item)
             }
+            binding.buttonMenu.setOnClickListener {
+                onItemClickCallback.onMenuClicked(item, it)
+            }
         }
     }
 
@@ -94,5 +97,6 @@ class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
     interface OnItemClickCallback {
         fun onItemClicked(article: ItemsRSS?)
         fun onItemSave(article: ItemsRSS?, position: Int)
+        fun onMenuClicked(article: ItemsRSS?, view: View)
     }
 }

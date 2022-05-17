@@ -18,4 +18,6 @@
     <string name="hint">Masukkan judul berita yang ingin dicari</string>
     <string name="no_saved_news">Tidak ada berita tersimpan</string>
     <string name="tidak_ditemukan">Berita dengan kata kunci %s tidak ditemukan</string>
+    <string name="hasil">Lihat feed dengan kategori %s</string>
+    <string name="dapatkan_prediksi_kategori_dengan_judul_ini">Dapatkan prediksi kategori dengan judul ini</string>
 </resources>

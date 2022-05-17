@@ -9,6 +9,7 @@ import com.aprilla.thesis.repository.remote.InterfaceRSS
 import com.aprilla.thesis.repository.remote.RemoteRepository
 import com.aprilla.thesis.repository.local.LocalRepository
 import com.aprilla.thesis.repository.local.SavedRSSDatabase
+import com.aprilla.thesis.repository.remote.InterfaceHeroku
 import com.aprilla.thesis.ui.detect.DetectViewModel
 import com.aprilla.thesis.ui.home.HomeViewModel
 import com.aprilla.thesis.ui.result.SearchViewModel
@@ -42,6 +43,7 @@ val mlModule = module {
             .baseUrl(HEROKU_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
+        retrofit.create(InterfaceHeroku::class.java)
     }
 }
 
