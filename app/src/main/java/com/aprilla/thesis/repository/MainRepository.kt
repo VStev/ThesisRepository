@@ -7,6 +7,7 @@ import com.aprilla.thesis.models.ItemsRSS
 import com.aprilla.thesis.repository.local.LocalRepository
 import com.aprilla.thesis.repository.remote.RemoteRepository
 import com.aprilla.thesis.repository.remote.Responses
+import com.aprilla.thesis.utilities.EspressoIdlingResource
 
 class MainRepository(
     RemoteRepository: RemoteRepository,
@@ -39,6 +40,7 @@ class MainRepository(
 //    }
 
     fun fetchItems(): LiveData<Resource<List<ItemsRSS>>> {
+        EspressoIdlingResource.increment()
         val result = MediatorLiveData<Resource<List<ItemsRSS>>>()
         result.value = Resource.loading(null)
         result.addSource(repo.mainFeed()) { data ->
@@ -46,12 +48,15 @@ class MainRepository(
             when (data) {
                 is Responses.Success -> {
                     result.value = Resource.success(data.data)
+                    EspressoIdlingResource.decrement()
                 }
                 is Responses.Error -> {
                     result.value = Resource.error(data.errorMessage, null)
+                    EspressoIdlingResource.decrement()
                 }
                 is Responses.Empty -> {
                     result.value = Resource.error("Tidak ada data", null)
+                    EspressoIdlingResource.decrement()
                 }
             }
         }
@@ -59,6 +64,7 @@ class MainRepository(
     }
 
     fun fetchItemsByCategory(category: String): LiveData<Resource<List<ItemsRSS>>> {
+        EspressoIdlingResource.increment()
         val result = MediatorLiveData<Resource<List<ItemsRSS>>>()
         result.value = Resource.loading(null)
         val fetch = when {
@@ -74,12 +80,15 @@ class MainRepository(
             when (data) {
                 is Responses.Success -> {
                     result.value = Resource.success(data.data)
+                    EspressoIdlingResource.decrement()
                 }
                 is Responses.Error -> {
                     result.value = Resource.error(data.errorMessage, null)
+                    EspressoIdlingResource.decrement()
                 }
                 is Responses.Empty -> {
                     result.value = Resource.error("Tidak ada data", null)
+                    EspressoIdlingResource.decrement()
                 }
             }
         }
@@ -117,6 +126,7 @@ class MainRepository(
 //    }
 
     fun getSavedRss(): LiveData<Resource<List<ItemsRSS>>> {
+        EspressoIdlingResource.increment()
         val result = MediatorLiveData<Resource<List<ItemsRSS>>>()
         result.value = Resource.loading(null)
         result.addSource(db.fetchSavedRss()) { data ->
@@ -124,14 +134,19 @@ class MainRepository(
             when {
                 (data.isNotEmpty()) -> {
                     result.value = Resource.success(data)
+                    EspressoIdlingResource.decrement()
                 }
-                else -> result.value = Resource.error("No saved data", null)
+                else -> {
+                    result.value = Resource.error("No saved data", null)
+                    EspressoIdlingResource.decrement()
+                }
             }
         }
         return result
     }
 
     fun searchRss(keyword: String): LiveData<Resource<List<ItemsRSS>>> {
+        EspressoIdlingResource.increment()
         val result = MediatorLiveData<Resource<List<ItemsRSS>>>()
         result.value = Resource.loading(null)
         result.addSource(repo.searchFeed(keyword)) { data ->
@@ -139,12 +154,15 @@ class MainRepository(
             when (data) {
                 is Responses.Success -> {
                     result.value = Resource.success(data.data)
+                    EspressoIdlingResource.decrement()
                 }
                 is Responses.Error -> {
                     result.value = Resource.error(data.errorMessage, null)
+                    EspressoIdlingResource.decrement()
                 }
                 is Responses.Empty -> {
                     result.value = Resource.error("Tidak ada data", null)
+                    EspressoIdlingResource.decrement()
                 }
             }
         }
@@ -152,6 +170,7 @@ class MainRepository(
     }
 
     fun predictCategory(title: String): LiveData<Resource<String>>{
+        EspressoIdlingResource.increment()
         val result = MediatorLiveData<Resource<String>>()
         result.value = Resource.loading(null)
         result.addSource(repo.predictCategory(title)) { data ->
@@ -159,12 +178,15 @@ class MainRepository(
             when (data) {
                 is Responses.Success -> {
                     result.value = Resource.success(data.data)
+                    EspressoIdlingResource.decrement()
                 }
                 is Responses.Error -> {
                     result.value = Resource.error(data.errorMessage, null)
+                    EspressoIdlingResource.decrement()
                 }
                 is Responses.Empty -> {
                     result.value = Resource.error("Tidak ada data", null)
+                    EspressoIdlingResource.decrement()
                 }
             }
         }
@@ -174,7 +196,15 @@ class MainRepository(
     fun setFavorite(link: String, state: Boolean) =
         exec.diskIO().execute { db.setFavorite(link, state) }
 
-    fun saveRss(item: ItemsRSS) = exec.diskIO().execute { db.saveRss(item) }
+    fun saveRss(item: ItemsRSS) = exec.diskIO().execute {
+        EspressoIdlingResource.increment()
+        db.saveRss(item)
+        EspressoIdlingResource.decrement()
+    }
 
-    fun deleteRss(item: ItemsRSS) = exec.diskIO().execute { db.deleteRss(item) }
+    fun deleteRss(item: ItemsRSS) = exec.diskIO().execute {
+        EspressoIdlingResource.increment()
+        db.deleteRss(item)
+        EspressoIdlingResource.decrement()
+    }
 }

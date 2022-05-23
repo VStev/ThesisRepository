@@ -111,7 +111,6 @@ class SearchResultActivity : AppCompatActivity() {
             when (content.status) {
                 Status.SUCCESS -> {
                     content.data?.let { adapter.setSavedData(it) }
-                    Log.d("TAG", "setLayouts: ${content.data}")
                     searched.observe(this){ result ->
                         when (result.status){
                             Status.SUCCESS -> {
@@ -125,7 +124,6 @@ class SearchResultActivity : AppCompatActivity() {
                                     visibility = View.VISIBLE
                                     layoutManager = LinearLayoutManager(context)
                                 }
-                                searched.removeObservers(this)
                             }
                             Status.ERROR -> {
                                 binding.shimmerLayout.apply {
@@ -157,7 +155,6 @@ class SearchResultActivity : AppCompatActivity() {
                                     visibility = View.VISIBLE
                                     layoutManager = LinearLayoutManager(context)
                                 }
-                                searched.removeObservers(this)
                             }
                             Status.ERROR -> {
                                 binding.shimmerLayout.apply {

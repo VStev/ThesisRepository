@@ -19,7 +19,7 @@
     <string name="no_saved_news">Tidak ada berita tersimpan</string>
     <string name="tidak_ditemukan">Berita dengan kata kunci %s tidak ditemukan</string>
     <string name="hasil">Lihat feed dengan kategori %s</string>
-    <string name="dapatkan_prediksi_kategori_dengan_judul_ini">Dapatkan prediksi kategori dengan judul ini</string>
+    <string name="dapatkan_prediksi_kategori_dengan_judul_ini">Prediksi kategori</string>
     <string name="muat_ulang">Muat Ulang</string>
     <string name="hasil_rekomendasi_feed_berita_berdasarkan_prediksi_kategori">Rekomendasi berita dengan kategori %s</string>
 </resources>
