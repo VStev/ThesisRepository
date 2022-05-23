@@ -19,8 +19,9 @@
         <entry key="..\:/Thesis/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Thesis/app/src/main/res/layout/fragment_savednews.xml" value="0.296195652173913" />
         <entry key="..\:/Thesis/app/src/main/res/layout/fragment_slideshow.xml" value="0.34479166666666666" />
+        <entry key="..\:/Thesis/app/src/main/res/layout/item_detected_cat.xml" value="0.3098958333333333" />
         <entry key="..\:/Thesis/app/src/main/res/layout/item_news.xml" value="0.4247787610619469" />
-        <entry key="..\:/Thesis/app/src/main/res/layout/item_news_saved.xml" value="0.296195652173913" />
+        <entry key="..\:/Thesis/app/src/main/res/layout/item_news_saved.xml" value="0.5" />
         <entry key="..\:/Thesis/app/src/main/res/layout/item_news_shimmer.xml" value="0.296195652173913" />
         <entry key="..\:/Thesis/app/src/main/res/layout/item_saved_shimmer.xml" value="0.296195652173913" />
         <entry key="..\:/Thesis/app/src/main/res/layout/nav_header_main.xml" value="0.34479166666666666" />

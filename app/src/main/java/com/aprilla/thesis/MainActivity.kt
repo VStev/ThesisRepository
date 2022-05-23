@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var parameter: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
-
+        parameter = intent.getStringExtra("param")?:"none"
+        val bundle = Bundle()
+        bundle.putString("title", intent.getStringExtra("title")?:"none")
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
@@ -59,6 +62,9 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+        if (parameter != "none"){
+            navController.navigate(R.id.action_nav_home_to_nav_detect, bundle)
+        }
     }
 
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {

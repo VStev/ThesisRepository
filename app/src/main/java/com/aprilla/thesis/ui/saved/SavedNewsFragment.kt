@@ -47,10 +47,6 @@ class SavedNewsFragment : Fragment() {
 
             override fun onItemSave(article: ItemsRSS?, position: Int) {
                 if (article != null) {
-//                                if (article.favourite) homeViewModel.saveItem(article) else homeViewModel.deleteItem(
-//                                    article
-//                                )
-//                    savedViewModel.setFavourite(article.link, article.favourite)
                     savedViewModel.deleteRss(article)
                     if (adapter.updateData(position)) {
                         binding.notFound.visibility = View.VISIBLE
@@ -60,14 +56,9 @@ class SavedNewsFragment : Fragment() {
             }
 
         })
-//        val listFav = ArrayList<ItemsRSS>()
-//        homeViewModel.fetchSaved().observe(viewLifecycleOwner) {
-//            adapter.setSavedData(listFav)
-//        }
         data.observe(viewLifecycleOwner) { content ->
             when (content.status) {
                 Status.SUCCESS -> {
-                    Toast.makeText(context, "Loaded", Toast.LENGTH_SHORT).show()
                     binding.shimmerLayout.apply {
                         stopShimmer()
                         visibility = View.GONE

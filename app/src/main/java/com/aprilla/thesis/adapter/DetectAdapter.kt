@@ -12,18 +12,18 @@ import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
+class DetectAdapter(): RecyclerView.Adapter<DetectAdapter.CardViewHolder>() {
 
     private val rssData = ArrayList<ItemsRSS>()
     private val savedDataLinks = ArrayList<String>()
     private lateinit var onItemClickCallback: OnItemClickCallback
 
     fun setData(items: List<ItemsRSS>){
-            rssData.clear()
-            items.forEach {
-                if (it.author.isNotBlank() || it.author.isNotEmpty()) rssData.add(it)
-            }
-            notifyDataSetChanged()
+        rssData.clear()
+        items.forEach {
+            if (it.author.isNotBlank() || it.author.isNotEmpty()) rssData.add(it)
+        }
+        notifyDataSetChanged()
     }
 
     fun setSavedData(items: List<ItemsRSS>){
@@ -80,7 +80,7 @@ class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_detected_cat, parent, false)
         return CardViewHolder(view)
     }
 

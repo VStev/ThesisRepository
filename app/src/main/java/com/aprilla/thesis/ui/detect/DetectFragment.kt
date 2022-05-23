@@ -1,20 +1,23 @@
 package com.aprilla.thesis.ui.detect
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.aprilla.thesis.R
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.aprilla.thesis.adapter.DetectAdapter
 import com.aprilla.thesis.databinding.FragmentDetectBinding
+import com.aprilla.thesis.models.ItemsRSS
 import com.aprilla.thesis.repository.Status
+import com.aprilla.thesis.ui.details.DetailActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetectFragment : Fragment() {
 
@@ -82,7 +85,7 @@ class DetectFragment : Fragment() {
                     }
                     Status.ERROR -> {
                         Toast.makeText(context, "Gagal melakukan koneksi ke server", Toast.LENGTH_LONG).show()
-                        binding.loadingbar.visibility = View.VISIBLE
+                        binding.loadingbar.visibility = View.GONE
                         detect.removeObservers(viewLifecycleOwner)
                     }
                     else -> {
@@ -109,7 +112,7 @@ class DetectFragment : Fragment() {
                 Status.ERROR -> {
                     Toast.makeText(context, "Gagal melakukan koneksi ke server", Toast.LENGTH_LONG)
                         .show()
-                    binding.loadingbar.visibility = View.VISIBLE
+                    binding.loadingbar.visibility = View.GONE
                     detect.removeObservers(viewLifecycleOwner)
                 }
                 else -> {
@@ -119,9 +122,100 @@ class DetectFragment : Fragment() {
     }
 
     private fun showFeed(category: String){
-        val feed = detectViewModel.getFeedFromCategory(category)
-        feed.observe(viewLifecycleOwner){
+        val saved = detectViewModel.fetchItems()
+        val data = detectViewModel.getFeedFromCategory(category)
+        val rv = binding.rvNews
+        val adapter = DetectAdapter()
+        adapter.setOnItemClickCallback(object : DetectAdapter.OnItemClickCallback {
+            override fun onItemClicked(article: ItemsRSS?) {
+                if (article != null) {
+                    val intent = Intent(context, DetailActivity::class.java)
+                    intent.putExtra(DetailActivity.NEWS_URL, article.link)
+                    startActivity(intent)
+                }
+            }
 
+            override fun onItemSave(article: ItemsRSS?, position: Int) {
+                if (article != null) {
+                    if (article.favourite) {
+                        detectViewModel.saveItem(article)
+                    } else {
+                        detectViewModel.deleteItem(article)
+                    }
+                }
+            }
+
+            override fun onMenuClicked(article: ItemsRSS?, cView: View) {
+                val popup = PopupMenu(context, cView)
+                val inflater: MenuInflater = popup.menuInflater
+                inflater.inflate(R.menu.popup_menu, popup.menu)
+                popup.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.predict_this -> {
+                            if (article != null) {
+                                title = article.title
+                            }
+                            binding.newsTitle.text?.clear()
+                            binding.newsTitle.setText(title)
+                            autoDetect(title)
+                            true
+                        } //redirect to fragment detect with title
+                        else -> false
+                    }
+                }
+                popup.show()
+            }
+        })
+
+        saved.observe(viewLifecycleOwner) { content ->
+            when (content.status) {
+                Status.SUCCESS -> {
+                    content.data?.let { adapter.setSavedData(it) }
+                    data.observe(viewLifecycleOwner) { data ->
+                        when (data.status) {
+                            Status.SUCCESS -> {
+                                data.data?.let { adapter.setData(it) }
+                                with(rv) {
+                                    visibility = View.VISIBLE
+                                    setAdapter(adapter)
+                                    layoutManager = LinearLayoutManager(context)
+                                }
+                            }
+                            Status.ERROR -> {
+//                                binding.notFound.visibility = View.VISIBLE
+                                binding.rvNews.visibility = View.GONE
+                            }
+                            else -> {
+                            }
+                        }
+                    }
+                    saved.removeObservers(viewLifecycleOwner)
+                }
+                Status.ERROR -> {
+                    content.data?.let { adapter.setSavedData(it) }
+                    data.observe(viewLifecycleOwner) { data ->
+                        when (data.status) {
+                            Status.SUCCESS -> {
+                                data.data?.let { adapter.setData(it) }
+                                with(rv) {
+                                    visibility = View.VISIBLE
+                                    setAdapter(adapter)
+                                    layoutManager = LinearLayoutManager(context)
+                                }
+                            }
+                            Status.ERROR -> {
+//                                binding.notFound.visibility = View.VISIBLE
+                                binding.rvNews.visibility = View.GONE
+                            }
+                            else -> {
+                            }
+                        }
+                    }
+                    saved.removeObservers(viewLifecycleOwner)
+                }
+                else -> {
+                }
+            }
         }
     }
 
@@ -130,8 +224,11 @@ class DetectFragment : Fragment() {
             text = getString(R.string.hasil, category)
             visibility = View.VISIBLE
         }
-        binding.cardRecommendation.visibility = View.VISIBLE
-        binding.textHeaderPredict.visibility = View.VISIBLE
+//        binding.cardRecommendation.visibility = View.VISIBLE
+        binding.textHeaderPredict.apply{
+            text = getString(R.string.hasil_rekomendasi_feed_berita_berdasarkan_prediksi_kategori, category)
+            visibility = View.VISIBLE
+        }
         showFeed(category)
     }
 

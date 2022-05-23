@@ -8,8 +8,6 @@ import android.view.*
 import android.widget.PopupMenu
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aprilla.thesis.R
@@ -18,10 +16,8 @@ import com.aprilla.thesis.databinding.FragmentHomeBinding
 import com.aprilla.thesis.models.ItemsRSS
 import com.aprilla.thesis.repository.Status
 import com.aprilla.thesis.ui.details.DetailActivity
-import com.aprilla.thesis.ui.detect.DetectFragment
 import com.aprilla.thesis.ui.result.SearchResultActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.net.URLEncoder
 
 
 class HomeFragment : Fragment() {
@@ -41,12 +37,16 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        setClickListener()
         setLayouts()
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun setClickListener() {
+        binding.reload.setOnClickListener {
+            binding.notFound.visibility = View.GONE
+            setLayouts()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -57,9 +57,8 @@ class HomeFragment : Fragment() {
         searchView.queryHint = resources.getString(R.string.hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                val keyword = URLEncoder.encode(query, "utf-8")
                 val intent = Intent(activity, SearchResultActivity::class.java)
-                intent.putExtra(SearchResultActivity.KEYWORD, keyword)
+                intent.putExtra(SearchResultActivity.KEYWORD, query)
                 startActivity(intent)
                 return true
             }
@@ -71,7 +70,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun setLayouts() {
-        binding.shimmerLayout.visibility = View.VISIBLE
+        binding.shimmerLayout.apply {
+            startShimmer()
+            visibility = View.VISIBLE
+        }
         val saved = homeViewModel.fetchSaved()
         val data = homeViewModel.fetchItems()
         val rv = binding.rvNews
@@ -134,6 +136,10 @@ class HomeFragment : Fragment() {
                                 }
                             }
                             Status.ERROR -> {
+                                binding.shimmerLayout.apply {
+                                    stopShimmer()
+                                    visibility = View.GONE
+                                }
                                 binding.notFound.visibility = View.VISIBLE
                                 binding.rvNews.visibility = View.GONE
                             }

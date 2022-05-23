@@ -11,8 +11,8 @@ import android.view.View
 import android.widget.PopupMenu
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.aprilla.thesis.MainActivity
 import com.aprilla.thesis.R
 import com.aprilla.thesis.adapter.FeedAdapter
 import com.aprilla.thesis.databinding.ActivitySearchResultBinding
@@ -47,9 +47,8 @@ class SearchResultActivity : AppCompatActivity() {
         searchView.queryHint = resources.getString(R.string.hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                val keyword = URLEncoder.encode(query, "utf-8")
                 val intent = Intent(baseContext, SearchResultActivity::class.java)
-                intent.putExtra(KEYWORD, keyword)
+                intent.putExtra(KEYWORD, query)
                 startActivity(intent)
                 return true
             }
@@ -60,18 +59,11 @@ class SearchResultActivity : AppCompatActivity() {
         return true
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when(item.itemId){
-//            android.R.id.home -> onBackPressed()
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
-
     private fun setLayouts() {
-        Log.d("TAG", "setLayouts: $keyword")
         binding.shimmerLayout.visibility = View.VISIBLE
         val data = searchViewModel.fetchItems()
-        val searched = searchViewModel.fetchSearched(keyword)
+        val link = URLEncoder.encode(keyword, "utf-8")
+        val searched = searchViewModel.fetchSearched(link)
         val rv = binding.rvNews
         val adapter = FeedAdapter()
         adapter.setOnItemClickCallback(object : FeedAdapter.OnItemClickCallback {
@@ -93,14 +85,19 @@ class SearchResultActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onMenuClicked(article: ItemsRSS?, view: View) {
-                val popup = PopupMenu(applicationContext, view)
+            override fun onMenuClicked(article: ItemsRSS?, cView: View) {
+                val popup = PopupMenu(applicationContext, cView)
                 val inflater: MenuInflater = popup.menuInflater
                 inflater.inflate(R.menu.popup_menu, popup.menu)
                 popup.setOnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.predict_this -> {
-
+                            val intent = Intent(applicationContext, MainActivity::class.java)
+                            with (intent){
+                                putExtra("param", "detect")
+                                putExtra("title", article?.title)
+                            }
+                            startActivity(intent)
                             true
                         } //redirect to fragment detect with title
                         else -> false
@@ -113,6 +110,8 @@ class SearchResultActivity : AppCompatActivity() {
         data.observe(this) { content ->
             when (content.status) {
                 Status.SUCCESS -> {
+                    content.data?.let { adapter.setSavedData(it) }
+                    Log.d("TAG", "setLayouts: ${content.data}")
                     searched.observe(this){ result ->
                         when (result.status){
                             Status.SUCCESS -> {
@@ -121,8 +120,6 @@ class SearchResultActivity : AppCompatActivity() {
                                     visibility = View.GONE
                                 }
                                 result.data?.let { adapter.setData(it) }
-                                Log.d("TAG", "setLayouts: ${result.data}")
-                                Log.d("TAG", "setLayouts: ${result.message}")
                                 with(rv) {
                                     setAdapter(adapter)
                                     visibility = View.VISIBLE
@@ -146,6 +143,7 @@ class SearchResultActivity : AppCompatActivity() {
                     data.removeObservers(this)
                 }
                 Status.ERROR -> {
+                    content.data?.let { adapter.setSavedData(it) }
                     searched.observe(this){ result ->
                         when (result.status){
                             Status.SUCCESS -> {
@@ -154,8 +152,6 @@ class SearchResultActivity : AppCompatActivity() {
                                     visibility = View.GONE
                                 }
                                 result.data?.let { adapter.setData(it) }
-                                Log.d("TAG", "setLayouts: ${result.data}")
-                                Log.d("TAG", "setLayouts: ${result.message}")
                                 with(rv) {
                                     setAdapter(adapter)
                                     visibility = View.VISIBLE
