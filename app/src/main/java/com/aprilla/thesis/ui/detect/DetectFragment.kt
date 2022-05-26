@@ -2,6 +2,7 @@ package com.aprilla.thesis.ui.detect
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuInflater
 import android.view.View
@@ -21,7 +22,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetectFragment : Fragment() {
 
-    private var title = "none"
     private var _binding: FragmentDetectBinding? = null
     private val detectViewModel: DetectViewModel by viewModel()
 
@@ -52,6 +52,7 @@ class DetectFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        Log.d("TAG", "onResume: $title")
         if (title != "none") {
             binding.newsTitle.setText(title)
             findNavController(this).clearBackStack(R.id.action_nav_home_to_nav_detect)
@@ -73,6 +74,7 @@ class DetectFragment : Fragment() {
 
     private fun detect(){
         val query = binding.newsTitle.text.toString()
+        Log.d("TAG", "detect: $query")
         binding.loadingbar.visibility = View.VISIBLE
         if (validation(query)){
             val detect = detectViewModel.predictCategory(query)
@@ -100,7 +102,7 @@ class DetectFragment : Fragment() {
 
     private fun autoDetect(query: String){
         binding.loadingbar.visibility = View.VISIBLE
-        binding.newsTitle.setText(title)
+        Log.d("TAG", "autoDetect: $query")
         val detect = detectViewModel.predictCategory(query)
         detect.observe(viewLifecycleOwner) { result ->
             when (result.status) {
@@ -146,24 +148,30 @@ class DetectFragment : Fragment() {
             }
 
             override fun onMenuClicked(article: ItemsRSS?, cView: View) {
-                val popup = PopupMenu(context, cView)
-                val inflater: MenuInflater = popup.menuInflater
-                inflater.inflate(R.menu.popup_menu, popup.menu)
-                popup.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.predict_this -> {
-                            if (article != null) {
-                                title = article.title
-                            }
-                            binding.newsTitle.text?.clear()
-                            binding.newsTitle.setText(title)
-                            autoDetect(title)
-                            true
-                        } //redirect to fragment detect with title
-                        else -> false
-                    }
+//                val popup = PopupMenu(context, cView)
+//                val inflater: MenuInflater = popup.menuInflater
+//                inflater.inflate(R.menu.popup_menu, popup.menu)
+//                popup.setOnMenuItemClickListener { item ->
+//                    when (item.itemId) {
+//                        R.id.predict_this -> {
+//                            if (article != null) {
+//                                title = article.title
+//                            }
+//                            binding.newsTitle.text?.clear()
+//                            binding.newsTitle.setText(title)
+//                            autoDetect(title)
+//                            true
+//                        } //redirect to fragment detect with title
+//                        else -> false
+//                    }
+//                }
+//                popup.show()
+                if (article != null) {
+                    title = article.title
                 }
-                popup.show()
+                binding.newsTitle.text?.clear()
+                binding.newsTitle.setText(title)
+                autoDetect(title)
             }
         })
 
@@ -241,5 +249,9 @@ class DetectFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        var title: String = "none"
     }
 }

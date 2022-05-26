@@ -86,24 +86,30 @@ class SearchResultActivity : AppCompatActivity() {
             }
 
             override fun onMenuClicked(article: ItemsRSS?, cView: View) {
-                val popup = PopupMenu(applicationContext, cView)
-                val inflater: MenuInflater = popup.menuInflater
-                inflater.inflate(R.menu.popup_menu, popup.menu)
-                popup.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.predict_this -> {
-                            val intent = Intent(applicationContext, MainActivity::class.java)
-                            with (intent){
-                                putExtra("param", "detect")
-                                putExtra("title", article?.title)
-                            }
-                            startActivity(intent)
-                            true
-                        } //redirect to fragment detect with title
-                        else -> false
-                    }
+//                val popup = PopupMenu(applicationContext, cView)
+//                val inflater: MenuInflater = popup.menuInflater
+//                inflater.inflate(R.menu.popup_menu, popup.menu)
+//                popup.setOnMenuItemClickListener { item ->
+//                    when (item.itemId) {
+//                        R.id.predict_this -> {
+//                            val intent = Intent(applicationContext, MainActivity::class.java)
+//                            with (intent){
+//                                putExtra("param", "detect")
+//                                putExtra("title", article?.title)
+//                            }
+//                            startActivity(intent)
+//                            true
+//                        } //redirect to fragment detect with title
+//                        else -> false
+//                    }
+//                }
+//                popup.show()
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                with (intent){
+                    putExtra("param", "detect")
+                    putExtra("title", article?.title)
                 }
-                popup.show()
+                startActivity(intent)
             }
 
         })
