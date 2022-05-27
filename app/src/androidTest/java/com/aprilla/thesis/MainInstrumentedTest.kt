@@ -16,10 +16,8 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import com.aprilla.thesis.utilities.EspressoIdlingResource
 import com.aprilla.thesis.utilities.MyViewAction
-import com.aprilla.thesis.utilities.MyViewAction.isPopupWindow
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
@@ -198,7 +196,6 @@ class MainInstrumentedTest {
                     MyViewAction.clickChildViewWithId(R.id.button_menu)
                 )
             )
-        onView(withText("Prediksi kategori")).inRoot(isPopupWindow()).perform(click())
         onView(withId(R.id.news_title)).check(matches(not(withText(""))))
         onView(withId(R.id.text_header_predict)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_news)).check(matches(isDisplayed()))
