@@ -4,10 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
@@ -228,13 +226,12 @@ class DetectFragment : Fragment() {
     }
 
     private fun setupResultView(category: String){
-        binding.textCategoryPredicted.apply{
-            text = getString(R.string.hasil, category)
+        binding.textPredicted.apply{
+            text = getString(R.string.hasil_prediksi_adalah_kategori_s, category)
             visibility = View.VISIBLE
         }
 //        binding.cardRecommendation.visibility = View.VISIBLE
         binding.textHeaderPredict.apply{
-            text = getString(R.string.hasil_rekomendasi_feed_berita_berdasarkan_prediksi_kategori, category)
             visibility = View.VISIBLE
         }
         showFeed(category)
