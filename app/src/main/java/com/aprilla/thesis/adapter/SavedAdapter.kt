@@ -59,6 +59,9 @@ class SavedAdapter: RecyclerView.Adapter<SavedAdapter.CardViewHolder>() {
             binding.cardNews.setOnClickListener{
                 onItemClickCallback.onItemClicked(item)
             }
+            binding.buttonShare.setOnClickListener {
+                onItemClickCallback.onShareNews(item)
+            }
         }
     }
 
@@ -74,11 +77,6 @@ class SavedAdapter: RecyclerView.Adapter<SavedAdapter.CardViewHolder>() {
 
     override fun getItemCount(): Int = rssData.size
 
-//    fun setSave(item: ItemsRSS): Boolean{
-//        Log.d("TAGb", "setSave: $savedData")
-//        return savedData.contains(item)
-//    }
-
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback){
         this.onItemClickCallback = onItemClickCallback
     }
@@ -86,5 +84,6 @@ class SavedAdapter: RecyclerView.Adapter<SavedAdapter.CardViewHolder>() {
     interface OnItemClickCallback {
         fun onItemClicked(article: ItemsRSS?)
         fun onItemSave(article: ItemsRSS?, position: Int)
+        fun onShareNews(article: ItemsRSS?)
     }
 }

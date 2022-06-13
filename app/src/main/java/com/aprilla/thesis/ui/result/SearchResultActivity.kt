@@ -86,24 +86,6 @@ class SearchResultActivity : AppCompatActivity() {
             }
 
             override fun onMenuClicked(article: ItemsRSS?, cView: View) {
-//                val popup = PopupMenu(applicationContext, cView)
-//                val inflater: MenuInflater = popup.menuInflater
-//                inflater.inflate(R.menu.popup_menu, popup.menu)
-//                popup.setOnMenuItemClickListener { item ->
-//                    when (item.itemId) {
-//                        R.id.predict_this -> {
-//                            val intent = Intent(applicationContext, MainActivity::class.java)
-//                            with (intent){
-//                                putExtra("param", "detect")
-//                                putExtra("title", article?.title)
-//                            }
-//                            startActivity(intent)
-//                            true
-//                        } //redirect to fragment detect with title
-//                        else -> false
-//                    }
-//                }
-//                popup.show()
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 with (intent){
                     putExtra("param", "detect")
@@ -112,6 +94,17 @@ class SearchResultActivity : AppCompatActivity() {
                 startActivity(intent)
             }
 
+            override fun onShareNews(article: ItemsRSS?) {
+                val sendText = "Baca berita ${article?.title} sekarang di ${article?.link}"
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, sendText)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
+            }
         })
         data.observe(this) { content ->
             when (content.status) {

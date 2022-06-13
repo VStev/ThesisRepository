@@ -75,6 +75,9 @@ class DetectAdapter(): RecyclerView.Adapter<DetectAdapter.CardViewHolder>() {
             binding.buttonMenu.setOnClickListener {
                 onItemClickCallback.onMenuClicked(item, it)
             }
+            binding.buttonShare.setOnClickListener {
+                onItemClickCallback.onShareNews(item)
+            }
         }
     }
 
@@ -102,5 +105,6 @@ class DetectAdapter(): RecyclerView.Adapter<DetectAdapter.CardViewHolder>() {
         fun onItemClicked(article: ItemsRSS?)
         fun onItemSave(article: ItemsRSS?, position: Int)
         fun onMenuClicked(article: ItemsRSS?, cView: View)
+        fun onShareNews(article: ItemsRSS?)
     }
 }

@@ -1,13 +1,16 @@
 package com.aprilla.thesis.ui.home
 
+import android.animation.ObjectAnimator
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.*
-import android.widget.PopupMenu
+import android.widget.AdapterView
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,12 +24,12 @@ import com.aprilla.thesis.ui.detect.DetectFragment
 import com.aprilla.thesis.ui.result.SearchResultActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val homeViewModel: HomeViewModel by viewModel()
+    private val handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +48,21 @@ class HomeFragment : Fragment() {
     }
 
     private fun setClickListener() {
+        val run = Runnable{
+            binding.refreshPrompt.visibility = View.VISIBLE
+            playAnimation()
+        }
         binding.reload.setOnClickListener {
             binding.notFound.visibility = View.GONE
             setLayouts()
         }
+        binding.refreshPrompt.setOnClickListener {
+            setLayouts()
+            binding.refreshPrompt.visibility = View.GONE
+            binding.refreshPrompt.alpha = 0f
+            handler.postDelayed(run, 300000)
+        }
+        handler.postDelayed(run, 300000) //300000
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -76,10 +90,27 @@ class HomeFragment : Fragment() {
             startShimmer()
             visibility = View.VISIBLE
         }
+        binding.layoutNews.visibility = View.GONE
         val saved = homeViewModel.fetchSaved()
         val data = homeViewModel.fetchItems()
         val rv = binding.rvNews
         val adapter = FeedAdapter()
+        binding.spinnerCategory.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parentView: AdapterView<*>?,
+                selectedItemView: View?,
+                position: Int,
+                id: Long
+            ) {
+                val cat = binding.spinnerCategory.selectedItem.toString()
+                adapter.filter(cat)
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>?) {
+                return
+            }
+        }
         adapter.setOnItemClickCallback(object : FeedAdapter.OnItemClickCallback {
             override fun onItemClicked(article: ItemsRSS?) {
                 if (article != null) {
@@ -93,34 +124,32 @@ class HomeFragment : Fragment() {
                 if (article != null) {
                     if (article.favourite) {
                         homeViewModel.saveItem(article)
+                        Toast.makeText(context, "Berita berhasil disimpan. Anda dapat melihat berita tersimpan pada menu berita tersimpan", Toast.LENGTH_SHORT).show()
                     } else {
                         homeViewModel.deleteItem(article)
+                        Toast.makeText(context, "Berita berhasil dihapus.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
 
             override fun onMenuClicked(article: ItemsRSS?, cView: View) {
-//                val popup = PopupMenu(context, cView)
-//                val inflater: MenuInflater = popup.menuInflater
-//                inflater.inflate(R.menu.popup_menu, popup.menu)
-//                popup.setOnMenuItemClickListener { item ->
-//                    when (item.itemId) {
-//                        R.id.predict_this -> {
-//                            val bundle = Bundle()
-//                            bundle.putString("title", article?.title)
-////                            view?.let { Navigation.findNavController(it).navigate(R.id.action_nav_home_to_nav_detect, bundle) }
-//                            findNavController().navigate(R.id.action_nav_home_to_nav_detect, bundle)
-//                            true
-//                        } //redirect to fragment detect with title
-//                        else -> false
-//                    }
-//                }
-//                popup.show()
                 val bundle = Bundle()
                 bundle.putString("title", article?.title)
                 Log.d("TAG", "onMenuClicked: ${article?.title}")
                 DetectFragment.title = article?.title?:"none"
                 findNavController().navigate(R.id.action_nav_home_to_nav_detect, bundle)
+            }
+
+            override fun onShareNews(article: ItemsRSS?) {
+                val sendText = "Saya menemukan berita ${article?.title} dengan kategori ${article?.category}. Baca sekarang di ${article?.link}"
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, sendText)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
             }
         })
 
@@ -131,15 +160,36 @@ class HomeFragment : Fragment() {
                     data.observe(viewLifecycleOwner) { data ->
                         when (data.status) {
                             Status.SUCCESS -> {
-                                binding.shimmerLayout.apply {
-                                    stopShimmer()
-                                    visibility = View.GONE
-                                }
                                 data.data?.let { adapter.setData(it) }
-                                with(rv) {
-                                    visibility = View.VISIBLE
-                                    setAdapter(adapter)
-                                    layoutManager = LinearLayoutManager(context)
+                                val titles = ArrayList<String>()
+                                data.data?.forEach {
+                                    titles.add(it.title)
+                                }
+                                homeViewModel.batchPredict(titles).observe(viewLifecycleOwner){ predicted ->
+                                    when (predicted.status){
+                                        Status.SUCCESS -> {
+                                            predicted.data?.let { adapter.setCategories(it) }
+                                            binding.shimmerLayout.apply {
+                                                stopShimmer()
+                                                visibility = View.GONE
+                                            }
+                                            with(rv) {
+                                                setAdapter(adapter)
+                                                layoutManager = LinearLayoutManager(context)
+                                            }
+                                            binding.layoutNews.visibility = View.VISIBLE
+                                        }
+                                        Status.ERROR -> {
+                                            binding.shimmerLayout.apply {
+                                                stopShimmer()
+                                                visibility = View.GONE
+                                            }
+                                            binding.notFound.visibility = View.VISIBLE
+                                            binding.layoutNews.visibility = View.GONE
+                                        }
+                                        else -> {
+                                        }
+                                    }
                                 }
                             }
                             Status.ERROR -> {
@@ -148,7 +198,7 @@ class HomeFragment : Fragment() {
                                     visibility = View.GONE
                                 }
                                 binding.notFound.visibility = View.VISIBLE
-                                binding.rvNews.visibility = View.GONE
+                                binding.layoutNews.visibility = View.GONE
                             }
                             else -> {
                             }
@@ -161,15 +211,36 @@ class HomeFragment : Fragment() {
                     data.observe(viewLifecycleOwner) { data ->
                         when (data.status) {
                             Status.SUCCESS -> {
-                                binding.shimmerLayout.apply {
-                                    stopShimmer()
-                                    visibility = View.GONE
-                                }
                                 data.data?.let { adapter.setData(it) }
-                                with(rv) {
-                                    visibility = View.VISIBLE
-                                    setAdapter(adapter)
-                                    layoutManager = LinearLayoutManager(context)
+                                val titles = ArrayList<String>()
+                                data.data?.forEach {
+                                    titles.add(it.title)
+                                }
+                                homeViewModel.batchPredict(titles).observe(viewLifecycleOwner){ predicteds ->
+                                    when (predicteds.status){
+                                        Status.SUCCESS -> {
+                                            predicteds.data?.let { adapter.setCategories(it) }
+                                            binding.shimmerLayout.apply {
+                                                stopShimmer()
+                                                visibility = View.GONE
+                                            }
+                                            with(rv) {
+                                                setAdapter(adapter)
+                                                layoutManager = LinearLayoutManager(context)
+                                            }
+                                            binding.layoutNews.visibility = View.VISIBLE
+                                        }
+                                        Status.ERROR -> {
+                                            binding.shimmerLayout.apply {
+                                                stopShimmer()
+                                                visibility = View.GONE
+                                            }
+                                            binding.notFound.visibility = View.VISIBLE
+                                            binding.layoutNews.visibility = View.GONE
+                                        }
+                                        else -> {
+                                        }
+                                    }
                                 }
                             }
                             Status.ERROR -> {
@@ -178,7 +249,7 @@ class HomeFragment : Fragment() {
                                     visibility = View.GONE
                                 }
                                 binding.notFound.visibility = View.VISIBLE
-                                binding.rvNews.visibility = View.GONE
+                                binding.layoutNews.visibility = View.GONE
                             }
                             else -> {
                             }
@@ -190,6 +261,10 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun playAnimation(){
+        ObjectAnimator.ofFloat(binding.refreshPrompt, View.ALPHA, 1f).setDuration(500).start()
     }
 
     override fun onDestroyView() {

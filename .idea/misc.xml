@@ -5,6 +5,10 @@
       <map>
         <entry key="..\:/Thesis/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.282" />
         <entry key="..\:/Thesis/app/src/main/res/drawable/bg_gradient.xml" value="0.282" />
+        <entry key="..\:/Thesis/app/src/main/res/drawable/ic_baseline_bookmark_24.xml" value="0.282" />
+        <entry key="..\:/Thesis/app/src/main/res/drawable/ic_baseline_not_bookmarked_24.xml" value="0.282" />
+        <entry key="..\:/Thesis/app/src/main/res/drawable/ic_baseline_refresh_24.xml" value="0.282" />
+        <entry key="..\:/Thesis/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.282" />
         <entry key="..\:/Thesis/app/src/main/res/drawable/ic_baseline_trash.xml" value="0.2565" />
         <entry key="..\:/Thesis/app/src/main/res/drawable/ic_launcher_background.xml" value="0.282" />
         <entry key="..\:/Thesis/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.282" />
@@ -14,14 +18,17 @@
         <entry key="..\:/Thesis/app/src/main/res/drawable/placeholder_item_picture.xml" value="0.2565" />
         <entry key="..\:/Thesis/app/src/main/res/drawable/splash_background.xml" value="0.282" />
         <entry key="..\:/Thesis/app/src/main/res/layout/activity_detail.xml" value="0.296195652173913" />
+        <entry key="..\:/Thesis/app/src/main/res/layout/activity_help.xml" value="0.3098958333333333" />
         <entry key="..\:/Thesis/app/src/main/res/layout/activity_main.xml" value="0.34479166666666666" />
         <entry key="..\:/Thesis/app/src/main/res/layout/activity_search_result.xml" value="0.296195652173913" />
         <entry key="..\:/Thesis/app/src/main/res/layout/activity_splash_screen.xml" value="0.3098958333333333" />
         <entry key="..\:/Thesis/app/src/main/res/layout/app_bar_main.xml" value="0.34479166666666666" />
         <entry key="..\:/Thesis/app/src/main/res/layout/content_main.xml" value="0.34479166666666666" />
+        <entry key="..\:/Thesis/app/src/main/res/layout/fragment_about.xml" value="0.4857142857142857" />
         <entry key="..\:/Thesis/app/src/main/res/layout/fragment_detail.xml" value="0.296195652173913" />
         <entry key="..\:/Thesis/app/src/main/res/layout/fragment_detect.xml" value="0.5" />
         <entry key="..\:/Thesis/app/src/main/res/layout/fragment_gallery.xml" value="0.34479166666666666" />
+        <entry key="..\:/Thesis/app/src/main/res/layout/fragment_help.xml" value="0.3098958333333333" />
         <entry key="..\:/Thesis/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Thesis/app/src/main/res/layout/fragment_savednews.xml" value="0.296195652173913" />
         <entry key="..\:/Thesis/app/src/main/res/layout/fragment_slideshow.xml" value="0.34479166666666666" />
@@ -31,7 +38,7 @@
         <entry key="..\:/Thesis/app/src/main/res/layout/item_news_shimmer.xml" value="0.296195652173913" />
         <entry key="..\:/Thesis/app/src/main/res/layout/item_saved_shimmer.xml" value="0.296195652173913" />
         <entry key="..\:/Thesis/app/src/main/res/layout/nav_header_main.xml" value="0.34479166666666666" />
-        <entry key="..\:/Thesis/app/src/main/res/menu/activity_main_drawer.xml" value="0.3098958333333333" />
+        <entry key="..\:/Thesis/app/src/main/res/menu/activity_main_drawer.xml" value="0.67" />
         <entry key="..\:/Thesis/app/src/main/res/menu/main.xml" value="0.3098958333333333" />
         <entry key="..\:/Thesis/app/src/main/res/menu/popup_menu.xml" value="0.3098958333333333" />
         <entry key="..\:/Thesis/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.282" />

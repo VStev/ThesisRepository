@@ -59,5 +59,8 @@ data class ItemsRSS @JvmOverloads constructor(
     var author: String = "",
 
     @ColumnInfo(name = "isFav")
-    var favourite: Boolean = false
+    var favourite: Boolean = false,
+
+    @ColumnInfo(name = "category")
+    var category: String = ""
 ) : Parcelable

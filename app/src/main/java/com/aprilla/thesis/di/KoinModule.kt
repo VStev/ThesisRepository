@@ -5,16 +5,17 @@ import com.aprilla.thesis.AppExecutors
 import com.aprilla.thesis.BASE_URL
 import com.aprilla.thesis.HEROKU_URL
 import com.aprilla.thesis.repository.MainRepository
-import com.aprilla.thesis.repository.remote.InterfaceRSS
-import com.aprilla.thesis.repository.remote.RemoteRepository
 import com.aprilla.thesis.repository.local.LocalRepository
 import com.aprilla.thesis.repository.local.SavedRSSDatabase
 import com.aprilla.thesis.repository.remote.InterfaceHeroku
+import com.aprilla.thesis.repository.remote.InterfaceRSS
+import com.aprilla.thesis.repository.remote.RemoteRepository
 import com.aprilla.thesis.ui.detect.DetectViewModel
 import com.aprilla.thesis.ui.home.HomeViewModel
 import com.aprilla.thesis.ui.result.SearchViewModel
 import com.aprilla.thesis.ui.saved.SavedNewsViewModel
 import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -22,6 +23,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
+import java.util.concurrent.TimeUnit
 
 @JvmField
 val rssModule = module {
@@ -36,11 +38,16 @@ val rssModule = module {
 
 val mlModule = module {
     single(named("predict")) {
+        val client = OkHttpClient.Builder()
+            .readTimeout(120L, TimeUnit.SECONDS)
+            .writeTimeout(120L, TimeUnit.SECONDS)
+            .build()
         val gson = GsonBuilder()
             .setLenient()
             .create()
         val retrofit = Retrofit.Builder()
             .baseUrl(HEROKU_URL)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         retrofit.create(InterfaceHeroku::class.java)
@@ -74,9 +81,6 @@ val repositoryModule = module {
 
 
 val viewModelModule = module {
-//    viewModel{
-//        HomeViewModel(get(named("rssRepo")), get(named("databaseRepo")))
-//    }
     viewModel {
         HomeViewModel(get(named("mainRepository")))
     }

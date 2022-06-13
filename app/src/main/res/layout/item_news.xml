@@ -58,7 +58,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,11 +85,21 @@
             android:id="@+id/button_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_share"
+            android:backgroundTint="@color/trans"
+            android:src="@drawable/ic_baseline_not_bookmarked_24"
+            />
+
+        <ImageButton
+            android:id="@+id/button_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:backgroundTint="@color/trans"
-            android:src="@drawable/ic_baseline_not_bookmarked_24"
+            android:src="@drawable/ic_baseline_share_24"
             />
 
         <Button
@@ -99,10 +109,11 @@
             android:src="@drawable/ic_baseline_more_vert_24"
             android:text="Prediksi"
             android:textColor="@color/white"
-            android:layout_marginBottom="2dp"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/txt_rssDate"
             app:layout_constraintEnd_toStartOf="@id/button_save"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/txt_rssDate"/>
+            app:layout_constraintStart_toEndOf="@id/txt_rssDate"
+            app:layout_constraintTop_toTopOf="@+id/txt_rssDate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

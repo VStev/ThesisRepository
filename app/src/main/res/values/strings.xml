@@ -22,4 +22,6 @@
     <string name="muat_ulang">Muat Ulang</string>
     <string name="hasil_rekomendasi_feed_berita_berdasarkan_prediksi_kategori">Rekomendasi berita dengan kategori terkait</string>
     <string name="hasil_prediksi_adalah_kategori_s">Hasil prediksi adalah kategori %s</string>
+    <string name="bantuan">Bantuan</string>
+    <string name="tentang_kami">Tentang kami</string>
 </resources>

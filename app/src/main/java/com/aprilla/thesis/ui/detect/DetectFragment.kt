@@ -146,30 +146,24 @@ class DetectFragment : Fragment() {
             }
 
             override fun onMenuClicked(article: ItemsRSS?, cView: View) {
-//                val popup = PopupMenu(context, cView)
-//                val inflater: MenuInflater = popup.menuInflater
-//                inflater.inflate(R.menu.popup_menu, popup.menu)
-//                popup.setOnMenuItemClickListener { item ->
-//                    when (item.itemId) {
-//                        R.id.predict_this -> {
-//                            if (article != null) {
-//                                title = article.title
-//                            }
-//                            binding.newsTitle.text?.clear()
-//                            binding.newsTitle.setText(title)
-//                            autoDetect(title)
-//                            true
-//                        } //redirect to fragment detect with title
-//                        else -> false
-//                    }
-//                }
-//                popup.show()
                 if (article != null) {
                     title = article.title
                 }
                 binding.newsTitle.text?.clear()
                 binding.newsTitle.setText(title)
                 autoDetect(title)
+            }
+
+            override fun onShareNews(article: ItemsRSS?) {
+                val sendText = "Baca berita ${article?.title} sekarang di ${article?.link}"
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, sendText)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
             }
         })
 

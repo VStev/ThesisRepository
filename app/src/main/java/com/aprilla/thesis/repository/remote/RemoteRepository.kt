@@ -1,12 +1,8 @@
 package com.aprilla.thesis.repository.remote
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.aprilla.thesis.models.HerokuRequest
-import com.aprilla.thesis.models.ItemsRSS
-import com.aprilla.thesis.models.ResponseHeroku
-import com.aprilla.thesis.models.ResponseRSS
+import com.aprilla.thesis.models.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -121,42 +117,6 @@ class RemoteRepository(private val retrofit: InterfaceRSS, private val pRetrofit
         return rValue
     }
 
-    fun otoFeed(): LiveData<Responses<List<ItemsRSS>>>{
-        val rValue = MutableLiveData<Responses<List<ItemsRSS>>>()
-        val fetch = retrofit.otoFeed()
-        fetch.enqueue(object: Callback<ResponseRSS>{
-            override fun onResponse(call: Call<ResponseRSS>, response: Response<ResponseRSS>) {
-                if (response.code() == 200){
-                    rValue.postValue(Responses.Success(response.body()?.item as List<ItemsRSS>))
-                }else{
-                    rValue.postValue(Responses.Empty)
-                }
-            }
-            override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
-                rValue.postValue(t.message?.let { Responses.Error(it) })
-            }
-        })
-        return rValue
-    }
-
-    fun culinaryFeed(): LiveData<Responses<List<ItemsRSS>>>{
-        val rValue = MutableLiveData<Responses<List<ItemsRSS>>>()
-        val fetch = retrofit.culinaryFeed()
-        fetch.enqueue(object: Callback<ResponseRSS>{
-            override fun onResponse(call: Call<ResponseRSS>, response: Response<ResponseRSS>) {
-                if (response.code() == 200){
-                    rValue.postValue(Responses.Success(response.body()?.item as List<ItemsRSS>))
-                }else{
-                    rValue.postValue(Responses.Empty)
-                }
-            }
-            override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
-                rValue.postValue(t.message?.let { Responses.Error(it) })
-            }
-        })
-        return rValue
-    }
-
     fun entFeed(): LiveData<Responses<List<ItemsRSS>>>{
         val rValue = MutableLiveData<Responses<List<ItemsRSS>>>()
         val fetch = retrofit.entFeed()
@@ -214,6 +174,33 @@ class RemoteRepository(private val retrofit: InterfaceRSS, private val pRetrofit
                 }
             }
             override fun onFailure(call: Call<ResponseHeroku>, t: Throwable) {
+                rValue.postValue(t.message?.let { Responses.Error(it) })
+            }
+        })
+        return rValue
+    }
+
+    fun batchPredictCategory(title: List<String>): LiveData<Responses<List<ResponseHeroku>>>{
+        val tempRequest = ArrayList<HerokuRequest>()
+        title.forEach {
+            tempRequest.add(HerokuRequest(it))
+        }
+        val request = HerokuBatchRequest(tempRequest)
+        val rValue = MutableLiveData<Responses<List<ResponseHeroku>>>()
+        val fetch = pRetrofit.batchPredict(request)
+        fetch.enqueue(object: Callback<BatchedResponse>{
+            override fun onResponse(call: Call<BatchedResponse>, response: Response<BatchedResponse>) {
+                if (response.code() == 200){
+                    if (response.body()?.batch_category != null) {
+                        rValue.postValue(Responses.Success(response.body()?.batch_category as List<ResponseHeroku>))
+                    }else{
+                        rValue.postValue(Responses.Empty)
+                    }
+                }else{
+                    rValue.postValue(Responses.Empty)
+                }
+            }
+            override fun onFailure(call: Call<BatchedResponse>, t: Throwable) {
                 rValue.postValue(t.message?.let { Responses.Error(it) })
             }
         })

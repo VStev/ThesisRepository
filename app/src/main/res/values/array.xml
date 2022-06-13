@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="kategori">
+        <item>"All"</item>
+        <item>"News"</item>
+        <item>"Ekonomi"</item>
+        <item>"Politik"</item>
+        <item>"Kesehatan"</item>
+        <item>"Olahraga"</item>
+        <item>"Lainnya"</item>
+    </string-array>
+</resources>

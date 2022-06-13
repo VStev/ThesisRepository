@@ -43,4 +43,14 @@
         android:name="com.aprilla.thesis.ui.result.SearchResultActivity"
         android:label="activity_search_result"
         tools:layout="@layout/activity_search_result" />
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.aprilla.thesis.ui.about.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/nav_help"
+        android:name="com.aprilla.thesis.ui.help.HelpFragment"
+        android:label="fragment_help"
+        tools:layout="@layout/fragment_help" />
 </navigation>

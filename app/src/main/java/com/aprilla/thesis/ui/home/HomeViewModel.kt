@@ -13,6 +13,8 @@ class HomeViewModel(MainRepository: MainRepository) : ViewModel() {
 
     fun fetchItems(): LiveData<Resource<List<ItemsRSS>>> = repo.fetchItems()
 
+    fun batchPredict(title: List<String>): LiveData<Resource<List<String>>> = repo.batchPredictCategory(title)
+
     fun saveItem(item: ItemsRSS) = repo.saveRss(item)
 
     fun deleteItem(item: ItemsRSS) = repo.deleteRss(item)

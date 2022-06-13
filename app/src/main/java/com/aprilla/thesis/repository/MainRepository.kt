@@ -8,6 +8,7 @@ import com.aprilla.thesis.repository.local.LocalRepository
 import com.aprilla.thesis.repository.remote.RemoteRepository
 import com.aprilla.thesis.repository.remote.Responses
 import com.aprilla.thesis.utilities.EspressoIdlingResource
+import com.aprilla.thesis.utilities.GroupingFilter
 
 class MainRepository(
     RemoteRepository: RemoteRepository,
@@ -17,27 +18,6 @@ class MainRepository(
     private val repo = RemoteRepository
     private val db = LocalRepository
     private val exec = appExecutors
-
-    //    fun fetchItems(): LiveData<Resource<List<ItemsRSS>>> {
-//        return object: NetworkBoundResource<List<ItemsRSS>, List<ItemsRSS>>(exec){
-//            override fun loadFromDB(): LiveData<List<ItemsRSS>> {
-//                return db.fetchRss()
-//            }
-//
-//            override fun shouldFetch(data: List<ItemsRSS>?): Boolean {
-//                return true
-//            }
-//
-//            override fun createCall(): LiveData<Responses<List<ItemsRSS>>> = repo.mainFeed()
-//
-//            override fun saveCallResult(data: List<ItemsRSS>) {
-//                db.clearCache()
-//                data.forEach {
-//                    db.saveRss(it)
-//                }
-//            }
-//        }.asLiveData()
-//    }
 
     fun fetchItems(): LiveData<Resource<List<ItemsRSS>>> {
         EspressoIdlingResource.increment()
@@ -95,42 +75,32 @@ class MainRepository(
         return result
     }
 
-
-//    fun fetchCategorySpecific(category: String): LiveData<Resource<List<ItemsRSS>>> {
-//        return object : NetworkBoundResource<List<ItemsRSS>, List<ItemsRSS>>(exec) {
-//            override fun loadFromDB(): LiveData<List<ItemsRSS>> {
-//                return db.fetchRss()
-//            }
-//
-//            override fun shouldFetch(data: List<ItemsRSS>?): Boolean {
-//                return true
-//            }
-//
-//            override fun createCall(): LiveData<Responses<List<ItemsRSS>>> =
-//                when {
-//                    (category == "politik") -> repo.politicFeed()
-//                    (category == "news") -> repo.newsFeed()
-//                    (category == "ekomoni") -> repo.economyFeed()
-//                    (category == "kesehatan") -> repo.healthFeed()
-//                    (category == "olahraga") -> repo.sportFeed()
-//                    else -> repo.entFeed() //combine 3 as 1
-//                }
-//
-//            override fun saveCallResult(data: List<ItemsRSS>) {
-//                db.clearCache()
-//                data.forEach {
-//                    db.saveRss(it)
-//                }
-//            }
-//        }.asLiveData()
-//    }
-
     fun getSavedRss(): LiveData<Resource<List<ItemsRSS>>> {
         EspressoIdlingResource.increment()
         val result = MediatorLiveData<Resource<List<ItemsRSS>>>()
         result.value = Resource.loading(null)
-        result.addSource(db.fetchSavedRss()) { data ->
-            result.removeSource(db.fetchSavedRss())
+        result.addSource(db.fetchSavedRss(GroupingFilter.CAT_ALL)) { data ->
+            result.removeSource(db.fetchSavedRss(GroupingFilter.CAT_ALL))
+            when {
+                (data.isNotEmpty()) -> {
+                    result.value = Resource.success(data)
+                    EspressoIdlingResource.decrement()
+                }
+                else -> {
+                    result.value = Resource.error("No saved data", null)
+                    EspressoIdlingResource.decrement()
+                }
+            }
+        }
+        return result
+    }
+
+    fun getGroupedSavedRss(filter: GroupingFilter): LiveData<Resource<List<ItemsRSS>>> {
+        EspressoIdlingResource.increment()
+        val result = MediatorLiveData<Resource<List<ItemsRSS>>>()
+        result.value = Resource.loading(null)
+        result.addSource(db.fetchSavedRss(filter)) { data ->
+            result.removeSource(db.fetchSavedRss(filter))
             when {
                 (data.isNotEmpty()) -> {
                     result.value = Resource.success(data)
@@ -193,8 +163,33 @@ class MainRepository(
         return result
     }
 
-    fun setFavorite(link: String, state: Boolean) =
-        exec.diskIO().execute { db.setFavorite(link, state) }
+    fun batchPredictCategory(title: List<String>): LiveData<Resource<List<String>>>{
+        EspressoIdlingResource.increment()
+        val result = MediatorLiveData<Resource<List<String>>>()
+        result.value = Resource.loading(null)
+        result.addSource(repo.batchPredictCategory(title)) { data ->
+            result.removeSource(repo.batchPredictCategory(title))
+            when (data) {
+                is Responses.Success -> {
+                    val returnedList = ArrayList<String>()
+                    data.data.forEach {
+                        returnedList.add(it.category)
+                    }
+                    result.value = Resource.success(returnedList)
+                    EspressoIdlingResource.decrement()
+                }
+                is Responses.Error -> {
+                    result.value = Resource.error(data.errorMessage, null)
+                    EspressoIdlingResource.decrement()
+                }
+                is Responses.Empty -> {
+                    result.value = Resource.error("Tidak ada data", null)
+                    EspressoIdlingResource.decrement()
+                }
+            }
+        }
+        return result
+    }
 
     fun saveRss(item: ItemsRSS) = exec.diskIO().execute {
         EspressoIdlingResource.increment()

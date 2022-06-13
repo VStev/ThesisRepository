@@ -15,6 +15,7 @@ import java.util.*
 class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
 
     private val rssData = ArrayList<ItemsRSS>()
+    private val permaData = ArrayList<ItemsRSS>()
     private val savedDataLinks = ArrayList<String>()
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -31,6 +32,13 @@ class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
         items.forEach {
             savedDataLinks.add(it.link)
         }
+    }
+
+    fun setCategories(items: List<String>){
+        for(i in items.indices){
+            rssData[i].category = items[i]
+        }
+        permaData.addAll(rssData)
     }
 
     inner class CardViewHolder(items: View): RecyclerView.ViewHolder(items){
@@ -62,9 +70,11 @@ class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
             binding.buttonSave.setOnClickListener {
                 if (item.favourite){
                     binding.buttonSave.setImageResource(R.drawable.ic_baseline_not_bookmarked_24)
+                    savedDataLinks.remove(item.link)
                     item.favourite = false
                 }else{
                     binding.buttonSave.setImageResource(R.drawable.ic_baseline_bookmark_24)
+                    savedDataLinks.add(item.link)
                     item.favourite = true
                 }
                 onItemClickCallback.onItemSave(item, adapterPosition)
@@ -74,6 +84,9 @@ class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
             }
             binding.buttonMenu.setOnClickListener {
                 onItemClickCallback.onMenuClicked(item, it)
+            }
+            binding.buttonShare.setOnClickListener {
+                onItemClickCallback.onShareNews(item)
             }
         }
     }
@@ -98,9 +111,22 @@ class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
         this.onItemClickCallback = onItemClickCallback
     }
 
+    fun filter(category: String){
+        rssData.clear()
+        if (category != "All"){
+            permaData.forEach {
+                if (it.category == category) rssData.add(it)
+            }
+        }else{
+            rssData.addAll(permaData)
+        }
+        notifyDataSetChanged()
+    }
+
     interface OnItemClickCallback {
         fun onItemClicked(article: ItemsRSS?)
         fun onItemSave(article: ItemsRSS?, position: Int)
         fun onMenuClicked(article: ItemsRSS?, cView: View)
+        fun onShareNews(article: ItemsRSS?)
     }
 }
