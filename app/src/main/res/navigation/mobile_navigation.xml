@@ -46,11 +46,11 @@
     <fragment
         android:id="@+id/nav_about"
         android:name="com.aprilla.thesis.ui.about.AboutFragment"
-        android:label="fragment_about"
+        android:label="@string/tentang_kami"
         tools:layout="@layout/fragment_about" />
     <fragment
         android:id="@+id/nav_help"
         android:name="com.aprilla.thesis.ui.help.HelpFragment"
-        android:label="fragment_help"
+        android:label="@string/bantuan"
         tools:layout="@layout/fragment_help" />
 </navigation>

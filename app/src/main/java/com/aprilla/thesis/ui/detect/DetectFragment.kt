@@ -2,7 +2,6 @@ package com.aprilla.thesis.ui.detect
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,9 +21,6 @@ class DetectFragment : Fragment() {
 
     private var _binding: FragmentDetectBinding? = null
     private val detectViewModel: DetectViewModel by viewModel()
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +46,6 @@ class DetectFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d("TAG", "onResume: $title")
         if (title != "none") {
             binding.newsTitle.setText(title)
             findNavController(this).clearBackStack(R.id.action_nav_home_to_nav_detect)
@@ -72,8 +67,11 @@ class DetectFragment : Fragment() {
 
     private fun detect(){
         val query = binding.newsTitle.text.toString()
-        Log.d("TAG", "detect: $query")
         binding.loadingbar.visibility = View.VISIBLE
+        binding.textError.visibility = View.GONE
+        binding.textHeaderPredict.visibility = View.GONE
+        binding.textPredicted.visibility = View.GONE
+        binding.rvNews.visibility = View.GONE
         if (validation(query)){
             val detect = detectViewModel.predictCategory(query)
             detect.observe(viewLifecycleOwner){ result ->
@@ -100,7 +98,6 @@ class DetectFragment : Fragment() {
 
     private fun autoDetect(query: String){
         binding.loadingbar.visibility = View.VISIBLE
-        Log.d("TAG", "autoDetect: $query")
         val detect = detectViewModel.predictCategory(query)
         detect.observe(viewLifecycleOwner) { result ->
             when (result.status) {
@@ -182,7 +179,6 @@ class DetectFragment : Fragment() {
                                 }
                             }
                             Status.ERROR -> {
-//                                binding.notFound.visibility = View.VISIBLE
                                 binding.rvNews.visibility = View.GONE
                             }
                             else -> {
@@ -204,7 +200,6 @@ class DetectFragment : Fragment() {
                                 }
                             }
                             Status.ERROR -> {
-//                                binding.notFound.visibility = View.VISIBLE
                                 binding.rvNews.visibility = View.GONE
                             }
                             else -> {
@@ -224,7 +219,6 @@ class DetectFragment : Fragment() {
             text = getString(R.string.hasil_prediksi_adalah_kategori_s, category)
             visibility = View.VISIBLE
         }
-//        binding.cardRecommendation.visibility = View.VISIBLE
         binding.textHeaderPredict.apply{
             visibility = View.VISIBLE
         }

@@ -4,12 +4,10 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
-import android.widget.PopupMenu
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aprilla.thesis.MainActivity
@@ -77,10 +75,12 @@ class SearchResultActivity : AppCompatActivity() {
 
             override fun onItemSave(article: ItemsRSS?, position: Int) {
                 if (article != null) {
-                    if (article.favourite){
+                    if (article.favourite) {
                         searchViewModel.saveItem(article)
-                    }else{
+                        Toast.makeText(applicationContext, "Berita berhasil disimpan. Anda dapat melihat berita tersimpan pada menu berita tersimpan", Toast.LENGTH_SHORT).show()
+                    } else {
                         searchViewModel.deleteItem(article)
+                        Toast.makeText(applicationContext, "Berita berhasil dihapus.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

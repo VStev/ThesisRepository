@@ -19,7 +19,8 @@ class MainAppOverride: Application() {
                 mlModule,
                 databaseModule,
                 viewModelModule,
-                repositoryModule
+                repositoryModule,
+                dataStoreModule
             )
         }
     }

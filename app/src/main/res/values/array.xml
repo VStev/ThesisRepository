@@ -9,4 +9,40 @@
         <item>"Olahraga"</item>
         <item>"Lainnya"</item>
     </string-array>
+    <string-array name="help_message">
+        <item>"Selamat datang di News.io"</item>
+        <item>"Pada halaman utama, berita dikemas dalam bentuk kartu"</item>
+        <item>"Terdapat 3 tombol pada kartu, yaitu Prediksi, Bookmark dan Share. Untuk membaca berita, cukup tekan bagian kartu mana saja"</item>
+        <item>"Tekan tombol prediksi untuk melakukan prediksi. Anda akan otomatis berpindah ke halaman prediksi"</item>
+        <item>"Tekan tombol bookmark untuk menyimpan berita"</item>
+        <item>"Tekan tombol share untuk membagikan berita"</item>
+        <item>"Pada bagian atas aplikasi, terdapat filter, tombol menu, dan tombol search"</item>
+        <item>"Filter digunakan untuk menampilkan berita dengan kategori yang dipilih"</item>
+        <item>"Tekan tombol menu untuk berpindah halaman. Tombol berada di kiri atas"</item>
+        <item>"Tekan tombol search untuk mencari berita sesuai dengan kata kunci yang diinginkan"</item>
+        <item>"Terkadang setelah beberapa menit tombol refresh akan muncul. Tekan untuk mendapatkan berita terbaru"</item>
+        <item>"Pada halaman prediksi, terdapat kotak isian judul yang dapat diisi dengan judul yang diinginkan"</item>
+        <item>"Untuk melakukan prediksi, cukup tekan tombol prediksi, dan hasil akan ditampilkan kepada anda"</item>
+        <item>"Tombol pada kartu berita tersimpan sedikit berbeda. Kartu ini memiliki tombol delete dan share"</item>
+        <item>"Tekan tombol delete untuk menghapus berita"</item>
+        <item>"Sekian tutorial singkat ini, selamat menggunakan!"</item>
+    </string-array>
+    <integer-array name="drawables">
+        <item>@drawable/ic_splash_fore</item>
+        <item>@drawable/card</item>
+        <item>@drawable/card</item>
+        <item>@drawable/card_predict</item>
+        <item>@drawable/card_bookmark</item>
+        <item>@drawable/card_share</item>
+        <item>@drawable/filter_and_bar</item>
+        <item>@drawable/filter</item>
+        <item>@drawable/menu</item>
+        <item>@drawable/search</item>
+        <item>@drawable/load_available</item>
+        <item>@drawable/predict_box</item>
+        <item>@drawable/predict_button</item>
+        <item>@drawable/saved_help</item>
+        <item>@drawable/saved_delete</item>
+        <item>@drawable/ic_splash_fore</item>
+    </integer-array>
 </resources>

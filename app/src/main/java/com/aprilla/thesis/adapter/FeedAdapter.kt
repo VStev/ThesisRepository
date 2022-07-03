@@ -48,9 +48,7 @@ class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
             val format = SimpleDateFormat("MMMM dd yyyy")
             val date = sdf.parse(item.pubDate)
             val cal = Calendar.getInstance()
-//            item.favourite = setSave(item)
             cal.time = date as Date
-//            cal.add(Calendar.HOUR, 7)
             binding.txtRssTitle.apply{
                 text = item.title
             }

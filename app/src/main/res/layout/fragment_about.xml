@@ -45,6 +45,7 @@
             android:layout_marginEnd="16dp"
             android:text="Note: Aplikasi ini tidak terafiliasi atau memiliki hubungan apapun dengan Jawapos. Segala logo Jawapos yang mungkin digunakan merupakan hak cipta masing masing."
             android:textAlignment="center"
+            android:visibility="gone"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="@+id/textView2"
             app:layout_constraintStart_toStartOf="@+id/textView2"

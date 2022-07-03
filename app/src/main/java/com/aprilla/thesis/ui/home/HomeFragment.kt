@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.SearchView
@@ -48,10 +47,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setClickListener() {
-        val run = Runnable{
-            binding.refreshPrompt.visibility = View.VISIBLE
-            playAnimation()
-        }
         binding.reload.setOnClickListener {
             binding.notFound.visibility = View.GONE
             setLayouts()
@@ -60,9 +55,8 @@ class HomeFragment : Fragment() {
             setLayouts()
             binding.refreshPrompt.visibility = View.GONE
             binding.refreshPrompt.alpha = 0f
-            handler.postDelayed(run, 300000)
+            triggerReload()
         }
-        handler.postDelayed(run, 300000) //300000
     }
 
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -135,7 +129,6 @@ class HomeFragment : Fragment() {
             override fun onMenuClicked(article: ItemsRSS?, cView: View) {
                 val bundle = Bundle()
                 bundle.putString("title", article?.title)
-                Log.d("TAG", "onMenuClicked: ${article?.title}")
                 DetectFragment.title = article?.title?:"none"
                 findNavController().navigate(R.id.action_nav_home_to_nav_detect, bundle)
             }
@@ -154,6 +147,7 @@ class HomeFragment : Fragment() {
         })
 
         saved.observe(viewLifecycleOwner) { content ->
+            binding.status.text = "Memuat berita"
             when (content.status) {
                 Status.SUCCESS -> {
                     content.data?.let { adapter.setSavedData(it) }
@@ -165,6 +159,7 @@ class HomeFragment : Fragment() {
                                 data.data?.forEach {
                                     titles.add(it.title)
                                 }
+                                binding.status.text = "Melakukan klasifikasi berita"
                                 homeViewModel.batchPredict(titles).observe(viewLifecycleOwner){ predicted ->
                                     when (predicted.status){
                                         Status.SUCCESS -> {
@@ -178,6 +173,7 @@ class HomeFragment : Fragment() {
                                                 layoutManager = LinearLayoutManager(context)
                                             }
                                             binding.layoutNews.visibility = View.VISIBLE
+                                            triggerReload()
                                         }
                                         Status.ERROR -> {
                                             binding.shimmerLayout.apply {
@@ -216,6 +212,7 @@ class HomeFragment : Fragment() {
                                 data.data?.forEach {
                                     titles.add(it.title)
                                 }
+                                binding.status.text = "Melakukan klasifikasi berita"
                                 homeViewModel.batchPredict(titles).observe(viewLifecycleOwner){ predicteds ->
                                     when (predicteds.status){
                                         Status.SUCCESS -> {
@@ -229,6 +226,7 @@ class HomeFragment : Fragment() {
                                                 layoutManager = LinearLayoutManager(context)
                                             }
                                             binding.layoutNews.visibility = View.VISIBLE
+                                            triggerReload()
                                         }
                                         Status.ERROR -> {
                                             binding.shimmerLayout.apply {
@@ -263,6 +261,14 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun triggerReload(){
+        val run = Runnable{
+            binding.refreshPrompt.visibility = View.VISIBLE
+            playAnimation()
+        }
+        handler.postDelayed(run, 90000) //300000
+    }
+
     private fun playAnimation(){
         ObjectAnimator.ofFloat(binding.refreshPrompt, View.ALPHA, 1f).setDuration(500).start()
     }
@@ -270,5 +276,6 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        handler.removeCallbacksAndMessages(null)
     }
 }

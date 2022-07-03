@@ -104,14 +104,13 @@ class MainRepository(
             when {
                 (data.isNotEmpty()) -> {
                     result.value = Resource.success(data)
-                    EspressoIdlingResource.decrement()
                 }
                 else -> {
                     result.value = Resource.error("No saved data", null)
-                    EspressoIdlingResource.decrement()
                 }
             }
         }
+        EspressoIdlingResource.decrement()
         return result
     }
 

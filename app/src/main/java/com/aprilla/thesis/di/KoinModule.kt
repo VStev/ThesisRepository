@@ -1,5 +1,10 @@
 package com.aprilla.thesis.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.aprilla.thesis.AppExecutors
 import com.aprilla.thesis.BASE_URL
@@ -14,6 +19,8 @@ import com.aprilla.thesis.ui.detect.DetectViewModel
 import com.aprilla.thesis.ui.home.HomeViewModel
 import com.aprilla.thesis.ui.result.SearchViewModel
 import com.aprilla.thesis.ui.saved.SavedNewsViewModel
+import com.aprilla.thesis.ui.splash.SplashScreenViewModel
+import com.aprilla.thesis.utilities.SettingPreferences
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -25,11 +32,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import java.util.concurrent.TimeUnit
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "com.aprilla.thesis.shared.preferences")
+
 @JvmField
 val rssModule = module {
     single(named("rss")) {
+        val client = OkHttpClient.Builder()
+            .readTimeout(120L, TimeUnit.SECONDS)
+            .writeTimeout(120L, TimeUnit.SECONDS)
+            .build()
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(client)
             .addConverterFactory(SimpleXmlConverterFactory.create())
             .build()
         retrofit.create(InterfaceRSS::class.java)
@@ -79,6 +93,14 @@ val repositoryModule = module {
     }
 }
 
+val dataStoreModule = module{
+    single{
+        SettingPreferences(
+            androidContext().dataStore,
+            booleanPreferencesKey("isFirstRun")
+        )
+    }
+}
 
 val viewModelModule = module {
     viewModel {
@@ -92,6 +114,9 @@ val viewModelModule = module {
     }
     viewModel{
         DetectViewModel(get(named("mainRepository")))
+    }
+    viewModel{
+        SplashScreenViewModel(get())
     }
 }
 
