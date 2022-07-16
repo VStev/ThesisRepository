@@ -22,6 +22,7 @@ class DetectFragment : Fragment() {
     private var _binding: FragmentDetectBinding? = null
     private val detectViewModel: DetectViewModel by viewModel()
     private val binding get() = _binding!!
+    private var cResult = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +78,7 @@ class DetectFragment : Fragment() {
             detect.observe(viewLifecycleOwner){ result ->
                 when (result.status){
                     Status.SUCCESS -> {
+                        cResult = result.data.toString()
                         result.data?.let { it1 -> setupResultView(it1) }
                         binding.loadingbar.visibility = View.GONE
                         detect.removeObservers(viewLifecycleOwner)
@@ -102,6 +104,7 @@ class DetectFragment : Fragment() {
         detect.observe(viewLifecycleOwner) { result ->
             when (result.status) {
                 Status.SUCCESS -> {
+                    cResult = result.data.toString()
                     result.data?.let { it1 -> setupResultView(it1) }
                     binding.loadingbar.visibility = View.GONE
                     detect.removeObservers(viewLifecycleOwner)
@@ -171,7 +174,7 @@ class DetectFragment : Fragment() {
                     data.observe(viewLifecycleOwner) { data ->
                         when (data.status) {
                             Status.SUCCESS -> {
-                                data.data?.let { adapter.setData(it) }
+                                data.data?.let { adapter.setData(it, cResult) }
                                 with(rv) {
                                     visibility = View.VISIBLE
                                     setAdapter(adapter)
@@ -192,7 +195,7 @@ class DetectFragment : Fragment() {
                     data.observe(viewLifecycleOwner) { data ->
                         when (data.status) {
                             Status.SUCCESS -> {
-                                data.data?.let { adapter.setData(it) }
+                                data.data?.let { adapter.setData(it, cResult) }
                                 with(rv) {
                                     visibility = View.VISIBLE
                                     setAdapter(adapter)

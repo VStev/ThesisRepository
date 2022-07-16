@@ -21,6 +21,9 @@ import com.aprilla.thesis.repository.Status
 import com.aprilla.thesis.ui.details.DetailActivity
 import com.aprilla.thesis.ui.detect.DetectFragment
 import com.aprilla.thesis.ui.result.SearchResultActivity
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -266,7 +269,7 @@ class HomeFragment : Fragment() {
             binding.refreshPrompt.visibility = View.VISIBLE
             playAnimation()
         }
-        handler.postDelayed(run, 90000) //300000
+        handler.postDelayed(run, 300000) //300000
     }
 
     private fun playAnimation(){

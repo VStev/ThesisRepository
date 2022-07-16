@@ -18,10 +18,13 @@ class DetectAdapter(): RecyclerView.Adapter<DetectAdapter.CardViewHolder>() {
     private val savedDataLinks = ArrayList<String>()
     private lateinit var onItemClickCallback: OnItemClickCallback
 
-    fun setData(items: List<ItemsRSS>){
+    fun setData(items: List<ItemsRSS>, cResult: String){
         rssData.clear()
         items.forEach {
-            if (it.author.isNotBlank() || it.author.isNotEmpty()) rssData.add(it)
+            if (it.author.isNotBlank() || it.author.isNotEmpty()){
+                it.category = cResult
+                rssData.add(it)
+            }
         }
         notifyDataSetChanged()
     }

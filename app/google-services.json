@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "333728928540",
+    "project_id": "thesis-news",
+    "storage_bucket": "thesis-news.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333728928540:android:21c5980ee38549b6dc60d9",
+        "android_client_info": {
+          "package_name": "com.aprilla.thesis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333728928540-rrushts5msnokrng44364tusd9avhqoa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfIKMZ3GoW_13C4t6Sz03Vn8OkTnwlJzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "333728928540-rrushts5msnokrng44364tusd9avhqoa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

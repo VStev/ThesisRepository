@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -40,6 +41,7 @@ android {
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.test.espresso:espresso-idling-resource:3.4.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:20.0.2'
     def roomVersion = "2.4.2"
     def koin_version= "3.2.0"
 
