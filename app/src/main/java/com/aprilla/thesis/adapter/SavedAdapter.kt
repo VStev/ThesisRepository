@@ -36,7 +36,7 @@ class SavedAdapter: RecyclerView.Adapter<SavedAdapter.CardViewHolder>() {
     inner class CardViewHolder(items: View): RecyclerView.ViewHolder(items){
         private val binding = ItemNewsSavedBinding.bind(itemView)
         fun bind(item: ItemsRSS){
-            val sdf = SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss Z")
+            val sdf = SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss Z", Locale.ENGLISH)
             val format = SimpleDateFormat("MMMM dd yyyy")
             val date = sdf.parse(item.pubDate)
             val cal = Calendar.getInstance()
