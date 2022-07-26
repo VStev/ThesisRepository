@@ -23,8 +23,10 @@ import com.aprilla.thesis.ui.splash.SplashScreenViewModel
 import com.aprilla.thesis.utilities.SettingPreferences
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.logger.Level
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -38,6 +40,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 val rssModule = module {
     single(named("rss")) {
         val client = OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .readTimeout(120L, TimeUnit.SECONDS)
             .writeTimeout(120L, TimeUnit.SECONDS)
             .build()

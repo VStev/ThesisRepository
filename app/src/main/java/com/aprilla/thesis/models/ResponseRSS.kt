@@ -13,8 +13,8 @@ data class ResponseRSS @JvmOverloads constructor(
     @param:Path("channel")
     var channelTitle: String? = null,
 
-    @field:ElementList(name = "item", inline = true, required = false)
-    @param:ElementList(name = "item", inline = true, required = false)
+    @field:ElementList(name = "item", inline = true, required = true)
+    @param:ElementList(name = "item", inline = true, required = true)
     @field:Path("channel")
     @param:Path("channel")
     var item: List<ItemsRSS>? = null

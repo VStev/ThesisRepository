@@ -1,7 +1,9 @@
 package com.aprilla.thesis.ui.detect
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -219,7 +221,11 @@ class DetectFragment : Fragment() {
 
     private fun setupResultView(category: String){
         binding.textPredicted.apply{
-            text = getString(R.string.hasil_prediksi_adalah_kategori_s, category)
+            text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Html.fromHtml(getString(R.string.hasil_prediksi_adalah_kategori_s, category), Html.FROM_HTML_MODE_COMPACT)
+            } else {
+                Html.fromHtml(getString(R.string.hasil_prediksi_adalah_kategori_s, category))
+            }
             visibility = View.VISIBLE
         }
         binding.textHeaderPredict.apply{

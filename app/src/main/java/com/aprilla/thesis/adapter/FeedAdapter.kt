@@ -22,7 +22,9 @@ class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
     fun setData(items: List<ItemsRSS>){
             rssData.clear()
             items.forEach {
-                if (it.author.isNotBlank() || it.author.isNotEmpty()) rssData.add(it)
+                if (it.author.isNotBlank() || it.author.isNotEmpty()){
+                    rssData.add(it)
+                }
             }
             notifyDataSetChanged()
     }
@@ -56,7 +58,7 @@ class FeedAdapter: RecyclerView.Adapter<FeedAdapter.CardViewHolder>() {
             binding.txtAuthor.text = item.author
             Glide.with(binding.root)
                 .load(item.thumbnail)
-                .placeholder(R.drawable.placeholder_item_picture)
+                .placeholder(R.drawable.jawapos_thumb)
                 .into(binding.imageRss)
             item.favourite = setSave(item.link)
             Log.d("TAG", "bind: ${item.favourite}")

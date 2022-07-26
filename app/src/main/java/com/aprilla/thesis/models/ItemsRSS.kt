@@ -46,8 +46,8 @@ data class ItemsRSS @JvmOverloads constructor(
 
     @field:Namespace(prefix = "content", reference = "http://purl.org/rss/1.0/modules/content/")
     @param:Namespace(prefix = "content", reference = "http://purl.org/rss/1.0/modules/content/")
-    @field:Element(name = "encoded", data = true)
-    @param:Element(name = "encoded", data = true)
+    @field:Element(name = "encoded", data = true, required = false)
+    @param:Element(name = "encoded", data = true, required = false)
     @ColumnInfo(name = "content")
     var content: String = "",
 

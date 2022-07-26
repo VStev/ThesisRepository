@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Thesis</string>
+    <string name="app_name">News.io</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -11,8 +11,7 @@
     <string name="menu_home">Feed Berita Terbaru</string>
     <string name="menu_detect">Deteksi Kategori Berita</string>
     <string name="menu_saved">Berita Tersimpan</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="gagal_melakukan_koneksi_ke_server_nsilahkan_cek_koneksi_internet_anda">Gagal melakukan koneksi ke server \nSilahkan cek koneksi internet anda</string>
+    <string name="gagal_melakukan_koneksi_ke_server_nsilahkan_cek_koneksi_internet_anda">Silahkan cek koneksi internet anda</string>
     <string name="cari_berita">Cari berita</string>
     <string name="hint">Masukkan judul berita yang ingin dicari</string>
     <string name="no_saved_news">Tidak ada berita tersimpan</string>
@@ -21,7 +20,7 @@
     <string name="dapatkan_prediksi_kategori_dengan_judul_ini">Prediksi kategori</string>
     <string name="muat_ulang">Muat Ulang</string>
     <string name="hasil_rekomendasi_feed_berita_berdasarkan_prediksi_kategori">Rekomendasi berita dengan kategori terkait</string>
-    <string name="hasil_prediksi_adalah_kategori_s">Hasil prediksi adalah kategori %s</string>
+    <string name="hasil_prediksi_adalah_kategori_s">Hasil prediksi adalah kategori <![CDATA[<u>%s</u>]]></string>
     <string name="bantuan">Bantuan</string>
     <string name="tentang_kami">Tentang kami</string>
 </resources>

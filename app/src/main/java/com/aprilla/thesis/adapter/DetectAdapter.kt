@@ -22,7 +22,9 @@ class DetectAdapter(): RecyclerView.Adapter<DetectAdapter.CardViewHolder>() {
         rssData.clear()
         items.forEach {
             if (it.author.isNotBlank() || it.author.isNotEmpty()){
-                it.category = cResult
+                rssData.add(it)
+            }else{
+                it.author = "-"
                 rssData.add(it)
             }
         }

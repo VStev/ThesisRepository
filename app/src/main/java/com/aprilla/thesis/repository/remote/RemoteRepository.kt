@@ -1,5 +1,6 @@
 package com.aprilla.thesis.repository.remote
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.aprilla.thesis.models.*
@@ -140,7 +141,9 @@ class RemoteRepository(private val retrofit: InterfaceRSS, private val pRetrofit
         val fetch = retrofit.search(keyword)
         fetch.enqueue(object: Callback<ResponseRSS>{
             override fun onResponse(call: Call<ResponseRSS>, response: Response<ResponseRSS>) {
+                Log.d("LOL", "onResponse: rescode ${response.code()}")
                 if (response.code() == 200){
+                    Log.d("LOL", "onResponse: ${response.body()}")
                     if (response.body()?.item != null) {
                         rValue.postValue(Responses.Success(response.body()?.item as List<ItemsRSS>))
                     }else{
@@ -151,6 +154,7 @@ class RemoteRepository(private val retrofit: InterfaceRSS, private val pRetrofit
                 }
             }
             override fun onFailure(call: Call<ResponseRSS>, t: Throwable) {
+                Log.d("LOL", "Failed asu, ${t.message}")
                 rValue.postValue(t.message?.let { Responses.Error(it) })
             }
         })

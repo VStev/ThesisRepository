@@ -21,9 +21,6 @@ import com.aprilla.thesis.repository.Status
 import com.aprilla.thesis.ui.details.DetailActivity
 import com.aprilla.thesis.ui.detect.DetectFragment
 import com.aprilla.thesis.ui.result.SearchResultActivity
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -87,11 +84,16 @@ class HomeFragment : Fragment() {
             startShimmer()
             visibility = View.VISIBLE
         }
+        binding.progressBar.visibility = View.VISIBLE
         binding.layoutNews.visibility = View.GONE
         val saved = homeViewModel.fetchSaved()
         val data = homeViewModel.fetchItems()
         val rv = binding.rvNews
         val adapter = FeedAdapter()
+        binding.refreshlayout.setOnRefreshListener {
+            binding.refreshlayout.isRefreshing = true
+            setLayouts()
+        }
         binding.spinnerCategory.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -171,11 +173,13 @@ class HomeFragment : Fragment() {
                                                 stopShimmer()
                                                 visibility = View.GONE
                                             }
+                                            binding.progressBar.visibility = View.GONE
                                             with(rv) {
                                                 setAdapter(adapter)
                                                 layoutManager = LinearLayoutManager(context)
                                             }
                                             binding.layoutNews.visibility = View.VISIBLE
+                                            binding.refreshlayout.isRefreshing = false
                                             triggerReload()
                                         }
                                         Status.ERROR -> {
@@ -183,6 +187,8 @@ class HomeFragment : Fragment() {
                                                 stopShimmer()
                                                 visibility = View.GONE
                                             }
+                                            binding.progressBar.visibility = View.GONE
+                                            binding.refreshlayout.isRefreshing = false
                                             binding.notFound.visibility = View.VISIBLE
                                             binding.layoutNews.visibility = View.GONE
                                         }
@@ -196,6 +202,8 @@ class HomeFragment : Fragment() {
                                     stopShimmer()
                                     visibility = View.GONE
                                 }
+                                binding.progressBar.visibility = View.GONE
+                                binding.refreshlayout.isRefreshing = false
                                 binding.notFound.visibility = View.VISIBLE
                                 binding.layoutNews.visibility = View.GONE
                             }
@@ -224,11 +232,13 @@ class HomeFragment : Fragment() {
                                                 stopShimmer()
                                                 visibility = View.GONE
                                             }
+                                            binding.progressBar.visibility = View.GONE
                                             with(rv) {
                                                 setAdapter(adapter)
                                                 layoutManager = LinearLayoutManager(context)
                                             }
                                             binding.layoutNews.visibility = View.VISIBLE
+                                            binding.refreshlayout.isRefreshing = false
                                             triggerReload()
                                         }
                                         Status.ERROR -> {
@@ -236,6 +246,8 @@ class HomeFragment : Fragment() {
                                                 stopShimmer()
                                                 visibility = View.GONE
                                             }
+                                            binding.progressBar.visibility = View.GONE
+                                            binding.refreshlayout.isRefreshing = false
                                             binding.notFound.visibility = View.VISIBLE
                                             binding.layoutNews.visibility = View.GONE
                                         }
@@ -249,6 +261,8 @@ class HomeFragment : Fragment() {
                                     stopShimmer()
                                     visibility = View.GONE
                                 }
+                                binding.progressBar.visibility = View.GONE
+                                binding.refreshlayout.isRefreshing = false
                                 binding.notFound.visibility = View.VISIBLE
                                 binding.layoutNews.visibility = View.GONE
                             }
@@ -269,7 +283,7 @@ class HomeFragment : Fragment() {
             binding.refreshPrompt.visibility = View.VISIBLE
             playAnimation()
         }
-        handler.postDelayed(run, 300000) //300000
+        handler.postDelayed(run, 300000) //5 mins
     }
 
     private fun playAnimation(){
