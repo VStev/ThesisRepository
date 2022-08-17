@@ -19,7 +19,7 @@
     <string name="hasil">Lihat feed dengan kategori %s</string>
     <string name="dapatkan_prediksi_kategori_dengan_judul_ini">Prediksi kategori</string>
     <string name="muat_ulang">Muat Ulang</string>
-    <string name="hasil_rekomendasi_feed_berita_berdasarkan_prediksi_kategori">Rekomendasi berita dengan kategori terkait</string>
+    <string name="hasil_rekomendasi_feed_berita_berdasarkan_prediksi_kategori">Rekomendasi berita terbaru dengan kategori terkait</string>
     <string name="hasil_prediksi_adalah_kategori_s">Hasil prediksi adalah kategori <![CDATA[<u>%s</u>]]></string>
     <string name="bantuan">Bantuan</string>
     <string name="tentang_kami">Tentang kami</string>

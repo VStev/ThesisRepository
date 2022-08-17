@@ -14,9 +14,11 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="256dp"
-            android:layout_height="256dp"
+            android:layout_width="192dp"
+            android:layout_height="192dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/ic_splash_fore"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -26,15 +28,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="Merupakan aplikasi portal berita dengan fitur klasifikasi kategori berita secara otomatis. Sumber berita didapatkan dari Jawapos."
-            android:textAlignment="center"
+            android:text="Merupakan aplikasi portal berita dengan fitur klasifikasi kategori berita secara otomatis.\nPengguna dapat melakukan deteksi kategori berita dengan berita yang telah ada, atau dengan judul yang dimasukkan secara mandiri.\n\nSumber berita didapatkan dari Jawapos."
+            android:textAlignment="textStart"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <TextView
             android:id="@+id/textView3"
@@ -56,75 +59,85 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
             android:text="Dibuat oleh"
+            android:textAlignment="textStart"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <ImageView
             android:id="@+id/logo_ikado"
-            android:layout_width="128dp"
+            android:layout_width="192dp"
             android:layout_height="128dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/ikado_stacked"
-            app:layout_constraintBottom_toTopOf="@+id/appver"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ikado" />
+            app:layout_constraintTop_toBottomOf="@+id/made" />
 
         <TextView
             android:id="@+id/ikado"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:text="Institut Informatika Indonesia Surabaya"
             android:textAlignment="center"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/dp2"
-            app:layout_constraintStart_toStartOf="@+id/logo_ikado"
-            app:layout_constraintTop_toBottomOf="@+id/made" />
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logo_ikado" />
 
         <TextView
             android:id="@+id/mhs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="Markus Andreas"
+            android:text="Mahasiswa:\nMarkus Andreas"
+            android:textAlignment="textStart"
             android:textColor="@color/white"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/logo_ikado"
-            app:layout_constraintTop_toTopOf="@+id/logo_ikado" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ikado" />
 
         <TextView
             android:id="@+id/dp1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
             android:text="Dosen pembimbing 1:\nTitasari Rahmawati"
+            android:textAlignment="textStart"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/dp2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/logo_ikado"
+            app:layout_constraintEnd_toEndOf="@+id/mhs"
+            app:layout_constraintStart_toStartOf="@+id/mhs"
             app:layout_constraintTop_toBottomOf="@+id/mhs" />
 
         <TextView
             android:id="@+id/dp2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="32dp"
             android:text="Dosen pembimbing 2:\nEdwin Meinardi Trianto"
+            android:textAlignment="textStart"
             android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/logo_ikado"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/logo_ikado" />
+            app:layout_constraintBottom_toTopOf="@+id/appver"
+            app:layout_constraintEnd_toEndOf="@+id/dp1"
+            app:layout_constraintStart_toStartOf="@+id/dp1"
+            app:layout_constraintTop_toBottomOf="@+id/dp1" />
 
         <TextView
             android:id="@+id/appver"
@@ -136,6 +149,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Tentang Aplikasi"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

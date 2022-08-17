@@ -40,9 +40,6 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 val rssModule = module {
     single(named("rss")) {
         val client = OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .readTimeout(120L, TimeUnit.SECONDS)
-            .writeTimeout(120L, TimeUnit.SECONDS)
             .build()
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
